@@ -7,10 +7,10 @@ import laserbeamsize as lbs
 import os
 from time import time
 
-ix = 1700
-iy = 800
-iw = 1500
-ih = 1500
+ix = lambda: 1700
+iy = lambda: 800
+iw = lambda: 1500
+ih = lambda: 1500
 
 def run(filenames):
     testfile=open("Message_txt.csv",'a')
@@ -30,7 +30,7 @@ def run(filenames):
         testfile.write(f'{Int_max}\n')
         beam = beam.sum(axis=-1)    # Summation over all channels e.g. RGB
         beam = beam/3               # Taking mean value of all channels
-        beam = beam[iy:iy+ih,ix:ix+iw]  # strips region of interest 
+        beam = beam[iy():iy()+ih(),ix():ix()+iw()]  # strips region of interest 
         #print(beam.shape)
         x, y, dx, dy, phi = lbs.beam_size(beam)
         if i == 0:
@@ -76,7 +76,7 @@ def analyze(file_object, cycle_no, t, total):
         beam = imageio.imread(file_object)
         beam = beam.sum(axis=-1)
         beam = beam/3
-        beam = beam[iy:iy+ih,ix:ix+iw]
+        beam = beam[iy():iy()+ih(),ix():ix()+iw()]
         x, y, dx, dy, phi = lbs.beam_size(beam)
         Int_max=np.max(beam)
         #Int_max=3.14159265359
