@@ -6,11 +6,26 @@ import matplotlib.pyplot as plt
 import laserbeamsize as lbs
 import os
 from time import time
+from pathlib import Path
+import json
 
-ix = lambda: 1700
-iy = lambda: 800
-iw = lambda: 1500
-ih = lambda: 1500
+
+roi_file = Path('.roi.json')
+try:
+    with open(roi_file, 'r') as f:
+        roi = json.load(f)
+except:
+    roi = dict(
+        ix = 1700,
+        iy = 800,
+        iw = 1500,
+        ih = 1500,
+    )
+
+ix = lambda: roi.get('ix', 1700)
+iy = lambda: roi.get('ix', 800)
+iw = lambda: roi.get('ix', 1500)
+ih = lambda: roi.get('ix', 1500)
 
 def run(filenames):
     testfile=open("Message_txt.csv",'a')
