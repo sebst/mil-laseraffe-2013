@@ -7,6 +7,14 @@ from fractions import Fraction
 import io
 from time import sleep, time
 
+""" enter exposure time in s """
+exposure = 0.5 # args.exp_time # 0.5
+""" frameRate is between 1/10 fps and 15fps """
+fRate = min(max(1.0/exposure,0.1),15.0)
+
+if exposure >= 10.0: exposure = 10.0
+
+
 
 cam = PiC(sensor_mode=3,framerate=fRate)
 #cam = PiC(sensor_mode=3)
