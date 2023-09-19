@@ -19,8 +19,10 @@ fi
 cd "$(dirname "$0")"
 
 main() {
+    ./system/install.sh
     cp ./*.py /home/pi/
     cp ./*.sh /home/pi/
+    cp ./affe*.png /home/pi/
     cp -a ./helper /home/pi/
     cp ./etc/systemd/usb-sync.service /etc/systemd/
     mkdir -p /var/log/laser2023
