@@ -15,6 +15,7 @@ import argparse
 parser = argparse.ArgumentParser(description="DESC")
 parser.add_argument('cycle', metavar='cycle', type=int)
 parser.add_argument('interval', metavar='interval', type=int)
+parser.add_argument('exp_time', metavar='exp_time', type=float)
 
 args = parser.parse_args()
 
@@ -28,7 +29,7 @@ interval = args.interval
 cycles = args.cycle
 
 """ enter exposure time in s """
-exposure = 0.5
+exposure = args.exp_time # 0.5
 """ frameRate is between 1/10 fps and 15fps """
 fRate = min(max(1.0/exposure,0.1),15.0)
 

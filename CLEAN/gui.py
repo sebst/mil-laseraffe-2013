@@ -216,8 +216,8 @@ class Fullscreen_Window:
                         for key, ip_sfx in self.laserPIKeys.items():    # Identification of pi's steam deck position and pi address (ip_suffix)
                             if ip_sfx == pi: break                      # looking for sfx, but the keys are the key positions 
                         print("pi", pi, "key", key)
-                        os.system(f'./collect.py {ip_sfx}')
-                        fn = (f'result_{collect_dst}_{ip_sfx}.csv.lll') # What happens, if the .csv is not there?
+                        os.system(f'./collect.py {ip_sfx} {collect_dst}')
+                        fn = (f'{collect_dst}/result_{ip_sfx}.csv') # What happens, if the .csv is not there?
                         print(fn)
                         green=(0,255,0)
                         red=(255,0,0)

@@ -6,11 +6,22 @@ import matplotlib.pyplot as plt
 import laserbeamsize as lbs
 import os
 from time import time
+from pathlib import Path
+import json
 
-ix = 2000
-iy = 1000
-iw = 1000
-ih = 1000
+
+roi_file = Path('.roi.json')
+try:
+    with open(roi_file, 'r') as f:
+        roi = json.load(f)
+except:
+    roi = dict()
+
+ix = lambda: roi.get('ix', 1700)
+iy = lambda: roi.get('iy', 800)
+iw = lambda: roi.get('iw', 1500)
+ih = lambda: roi.get('ih', 1500)
+col= lambda: roi.get('col', "U")
 
 def run(filenames):
     result = open('result.csv','a')
@@ -22,9 +33,12 @@ def run(filenames):
     for i,t in enumerate(times):
         print(f'reading: {filenames[t]}...')
         beam = imageio.imread(filenames[t])
-        beam = beam.sum(axis=-1)
-        beam = beam/3
-        beam = beam[iy:iy+ih,ix:ix+iw]
+        #Int_max=np.max(beam)
+        Int_max=3.14159265359
+
+        beam = beam.sum(axis=-1)    # Summation over all channels e.g. RGB
+        beam = beam/3               # Taking mean value of all channels
+        beam = beam[iy():iy()+ih(),ix():ix()+iw()]  # strips region of interest 
         #print(beam.shape)
         x, y, dx, dy, phi = lbs.beam_size(beam)
         if i == 0:
@@ -39,16 +53,15 @@ def run(filenames):
         #print("The ellipse diameter (closest to horizontal) is %.0f pixels" % dx)
         #print("The ellipse diameter (closest to   vertical) is %.0f pixels" % dy)
         #print("The ellipse is rotated %.0f° ccw from horizontal" % (phi*180/3.1416))
-        result.write(f'{i},{t},{x},{y},{dx},{dy},{phi*180.0/3.1416}\n')
+        result.write(f'{i},{t},{Int_max},{x},{y},{dx},{dy},{phi*180.0/3.1416}\n')
         now = time()
         tpf = float(now-startT)/float(i+1)
         fTime = float(total-i)*tpf/3600.0
         h = int(fTime)
         m = int((fTime-float(h))*60.0)
         s = int((fTime-float(h)-float(m)/60.0)*3600.0)
-        print(f'{i},{t},{x-x0},{y-y0}:--->{h}:{m}:{s}')
+        print(f'{i},{t},{x-x0},{y-y0}:--->{h}:{m}:{s}')#
     result.close()
-    
 
 def prep():
     fullList = os.listdir()
@@ -69,8 +82,10 @@ def analyze(file_object, cycle_no, t, total):
         beam = imageio.imread(file_object)
         beam = beam.sum(axis=-1)
         beam = beam/3
-        beam = beam[iy:iy+ih,ix:ix+iw]
+        beam = beam[iy():iy()+ih(),ix():ix()+iw()]
         x, y, dx, dy, phi = lbs.beam_size(beam)
+        Int_max=np.max(beam)
+        #Int_max=3.14159265359
         if i == 0:
             x0,y0 = x,y
         lbs.beam_size_plot(beam,pixel_size=1.55,units='µm')
@@ -82,7 +97,7 @@ def analyze(file_object, cycle_no, t, total):
         #print("The ellipse diameter (closest to horizontal) is %.0f pixels" % dx)
         #print("The ellipse diameter (closest to   vertical) is %.0f pixels" % dy)
         #print("The ellipse is rotated %.0f° ccw from horizontal" % (phi*180/3.1416))
-        result.write(f'{i},{t},{x},{y},{dx},{dy},{phi*180.0/3.1416}\n')
+        result.write(f'{i},{t},{Int_max},{x},{y},{dx},{dy},{phi*180.0/3.1416},{ix()},{iy()},{iw()},{ih()},{col()},\n')
         now = time()
         tpf = float(now-startT)/float(i+1)
         fTime = float(total-i)*tpf/3600.0
@@ -91,6 +106,7 @@ def analyze(file_object, cycle_no, t, total):
         s = int((fTime-float(h)-float(m)/60.0)*3600.0)
         print(f'{i},{t},{x-x0},{y-y0}:--->{h}:{m}:{s}')
     
+
 
 
 if __name__ == "__main__":

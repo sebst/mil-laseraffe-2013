@@ -18,6 +18,7 @@ def plotData(filename, barcode=""):
     for line in f:
         #print(line)
         data = line.split(',')
+        col = data[-1]
         data[-1] = data[-1][:-1]
         #print(data)
         x.append(float(data[1]))
@@ -49,7 +50,8 @@ def plotData(filename, barcode=""):
     ax.set_ylabel('y-pos [µm]')
     ax.set_ylim(y2.mean()-2.5,y2.mean()+2.5)
 
-    plt.suptitle(f'{filename} - Ser# {barcode}')
+    col_str = " – {col}" if col else ""
+    plt.suptitle(f'{filename} - Ser# {barcode}{col_str}')
     plt.tight_layout()
     #plt.ylim((y.mean()-1,y.mean()+1))
     plt.savefig(f'{filename[:-4]}.png')

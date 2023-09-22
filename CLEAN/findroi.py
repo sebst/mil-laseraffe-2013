@@ -64,8 +64,8 @@ def get_x_y_lower_left(image, window_size=1500):
     (minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(gray)
 
     x, y = (maxLoc)
-    x -= int(window_size/2)
-    y -= int(window_size/2)
+    # x -= int(window_size/2)
+    # y -= int(window_size/2)
 
     return (x, y)
 

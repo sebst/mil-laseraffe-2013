@@ -42,4 +42,4 @@ if __name__=="__main__":
     for i in pis:
         #target = os.path.join(fullDir,f'results_{dst}.csv')
         print(f'fetching results_{dst}.csv from 192.168.0.{i}...')
-        os.system(f'scp 192.168.0.{i}:result.csv {CUR_DATE}/result_{dst}_{i}.csv')
+        os.system(f'scp 192.168.0.{i}:result.csv {CUR_DATE}/result_{i}.csv')
