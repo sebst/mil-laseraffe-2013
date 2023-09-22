@@ -6,26 +6,11 @@ import matplotlib.pyplot as plt
 import laserbeamsize as lbs
 import os
 from time import time
-from pathlib import Path
-import json
 
-
-roi_file = Path('.roi.json')
-try:
-    with open(roi_file, 'r') as f:
-        roi = json.load(f)
-except:
-    roi = dict(
-        ix = 1700,
-        iy = 800,
-        iw = 1500,
-        ih = 1500,
-    )
-
-ix = lambda: roi.get('ix', 1700)
-iy = lambda: roi.get('ix', 800)
-iw = lambda: roi.get('ix', 1500)
-ih = lambda: roi.get('ix', 1500)
+ix = 1700
+iy = 800
+iw = 1500
+ih = 1500
 
 def run(filenames):
     testfile=open("Message_txt.csv",'a')
@@ -45,7 +30,7 @@ def run(filenames):
         testfile.write(f'{Int_max}\n')
         beam = beam.sum(axis=-1)    # Summation over all channels e.g. RGB
         beam = beam/3               # Taking mean value of all channels
-        beam = beam[iy():iy()+ih(),ix():ix()+iw()]  # strips region of interest 
+        beam = beam[iy:iy+ih,ix:ix+iw]  # strips region of interest 
         #print(beam.shape)
         x, y, dx, dy, phi = lbs.beam_size(beam)
         if i == 0:
@@ -91,7 +76,7 @@ def analyze(file_object, cycle_no, t, total):
         beam = imageio.imread(file_object)
         beam = beam.sum(axis=-1)
         beam = beam/3
-        beam = beam[iy():iy()+ih(),ix():ix()+iw()]
+        beam = beam[iy:iy+ih,ix:ix+iw]
         x, y, dx, dy, phi = lbs.beam_size(beam)
         Int_max=np.max(beam)
         #Int_max=3.14159265359
@@ -106,7 +91,7 @@ def analyze(file_object, cycle_no, t, total):
         #print("The ellipse diameter (closest to horizontal) is %.0f pixels" % dx)
         #print("The ellipse diameter (closest to   vertical) is %.0f pixels" % dy)
         #print("The ellipse is rotated %.0f° ccw from horizontal" % (phi*180/3.1416))
-        result.write(f'{i},{t},{Int_max},{x},{y},{dx},{dy},{phi*180.0/3.1416},{ix()},{iy()},{iw()},{ih()},\n')
+        result.write(f'{i},{t},{Int_max},{x},{y},{dx},{dy},{phi*180.0/3.1416}\n')
         now = time()
         tpf = float(now-startT)/float(i+1)
         fTime = float(total-i)*tpf/3600.0

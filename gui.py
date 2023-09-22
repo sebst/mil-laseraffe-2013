@@ -15,7 +15,55 @@ from datetime import timedelta, datetime
 import glob
 from collect import dst as collect_dst
 
+# from tkinter import *
+# from tkinter import ttk
+# root = Tk()
+# frm = ttk.Frame(root, padding=10)
+# frm.grid()
+# ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
+# ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=0)
+# root.mainloop()
+
+
+
 from streamdeck_helper import set_black, set_red, set_yellow, set_green, set_txt, deckInfo
+
+# def set_black(d, i):
+#     image = Image.new("RGB", (96,96), (0,0,0))
+#     d.set_key_image(i, PILHelper.to_native_format(d, image))
+
+
+# def set_red(d, i):
+#     image = Image.new('RGB', (96,96), (255,0,0))
+#     image = Image.open("affe2.png").convert("RGB")
+#     d.set_key_image(i, PILHelper.to_native_format(d, image))
+
+# def set_yellow(d, i):
+#     image = Image.new('RGB', (96,96), (255,255,0))
+#     image = Image.open("affe3.png").convert("RGB")
+#     d.set_key_image(i, PILHelper.to_native_format(d, image))
+
+
+# def set_green(d,i):
+#     image = Image.new('RGB', (96,96), (9,255,0))
+#     image = Image.open("affe1.png").convert("RGB")
+#     d.set_key_image(i, PILHelper.to_native_format(d, image))
+
+
+# def set_txt(d, i, txt, bg_color=(0,0,255)):
+#     image = Image.new('RGB', (96,96), bg_color)
+#     draw = ImageDraw.Draw(image)
+#     font = ImageFont.truetype("NotoMono-Regular.ttf", 32)
+#     draw.text((0, 0), str(txt), (255, 255, 255), font=font)
+#     d.set_key_image(i, PILHelper.to_native_format(d, image))
+
+
+# def deckInfo(index,deck):
+#     image_format = deck.key_image_format()
+#     print(f"Deck {index}: {deck.deck_type()}")
+
+
+
 class Fullscreen_Window:
 
     laserPIs = {i: False for i in range(101, 111)}
@@ -51,7 +99,6 @@ class Fullscreen_Window:
     selected_cycle = 100
     selected_interval = 10
     gallery_activated = False
-    run_id = None
 
     def __init__(self):
         self.lbc = None
@@ -64,9 +111,6 @@ class Fullscreen_Window:
 
         self.tk.bind('<KeyPress>', self.key_down)
         self.tk.bind('<KeyRelease>', self.key_up)
-
-    def on_started(self):
-        print("on_started called as measurement is started.")
 
 
     def set_barcode(self, lbc):
@@ -175,7 +219,6 @@ class Fullscreen_Window:
                     print(f"{pis} {self.selected_cycle} {self.selected_interval}")
                     os.system(f'./batch.py {pis} {self.selected_cycle} {self.selected_interval}')
                     self.started = True
-                    self.on_started()
                 # click on Interval_Key
                 elif (key - self.INTERVAL_KEY_0) % 8 == 0:
                     self.selected_interval = [10, 30, 45, 60][(key - self.INTERVAL_KEY_0) // 8]
