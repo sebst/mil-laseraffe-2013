@@ -31,6 +31,7 @@ main() {
     sudo /bin/systemctl start grafana-server
 
     # Install pip requirements.
+    # numpy opencv-python
 }
 
 main "$@"

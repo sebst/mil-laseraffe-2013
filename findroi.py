@@ -42,6 +42,8 @@ def take_picture(exposure=50):
 
     file_object = io.BytesIO()
     cam.capture(file_object, format="png")
+    sleep(1)
+    cam.capture("findroi-prod.png")
     file_object.seek(0)
 
     return file_object
@@ -98,4 +100,4 @@ if roi_file.exists():
 else:
     roi = find_roi()
     with open(roi_file, 'w+') as f:
-        json.dumps(roi)
+        json.dump(roi, f)
