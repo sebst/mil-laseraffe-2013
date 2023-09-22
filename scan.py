@@ -8,9 +8,26 @@ import io
 from analyze import analyze
 
 import threading
-
+from pathlib import Path
+import json
 
 import argparse
+
+roi_file = Path('.roi.json')
+try:
+    with open(roi_file, 'r') as f:
+        roi = json.load(f)
+except:
+    roi = dict()
+
+col = lambda: roi.get('col', "C")
+
+
+if col() == "UNKNOWN":
+    exit()
+
+
+
 
 parser = argparse.ArgumentParser(description="DESC")
 parser.add_argument('cycle', metavar='cycle', type=int)

@@ -15,12 +15,7 @@ try:
     with open(roi_file, 'r') as f:
         roi = json.load(f)
 except:
-    roi = dict(
-        ix = 1700,
-        iy = 800,
-        iw = 1500,
-        ih = 1500,
-    )
+    roi = dict()
 
 ix = lambda: roi.get('ix', 1700)
 iy = lambda: roi.get('ix', 800)

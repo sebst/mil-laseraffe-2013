@@ -69,6 +69,9 @@ def get_x_y_lower_left(image, window_size=1500):
 
     return (x, y)
 
+def get_color(file_object):
+    return "F"
+
 
 def find_roi():
 
@@ -77,11 +80,13 @@ def find_roi():
     try:
         file_object = take_picture(50)
         x, y = get_x_y_lower_left(file_object, window_size=int((iw+ih)/2))
+        col = get_color(file_object)
         return dict(
             ix = x,
             iy = y,
             iw = iw,
             ih = ih,
+            col= col,
         )
     except:
         return dict(
@@ -89,6 +94,7 @@ def find_roi():
             iy = 800,
             iw = 1500,
             ih = 1500,
+            col= "U",
         )
 
 

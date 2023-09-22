@@ -69,6 +69,8 @@ class Fullscreen_Window:
         now = datetime.now()
         dst = now.strftime("%Y%m%d-%H%M")
         self._CUR_DATE = dst
+        with open("START", "w+") as f:
+            f.write(self._CUR_DATE)
         print("on_started called as measurement is started.")
 
 
