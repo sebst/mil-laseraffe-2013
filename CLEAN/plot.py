@@ -27,6 +27,10 @@ def plotData(filename, barcode=""):
             color = data[-1]
         data[-1] = data[-1][:-1]
         #print(data)
+        try:
+            _ = data[1], data[2], data[3]
+        except:
+            continue
         x.append(float(data[1]))
         y1.append(float(data[2]))
         y2.append(float(data[3]))
