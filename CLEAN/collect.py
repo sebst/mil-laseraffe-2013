@@ -39,7 +39,12 @@ if __name__=="__main__":
          Path(CUR_DATE).mkdir()
 
 
+
+
+
     for i in pis:
-        #target = os.path.join(fullDir,f'results_{dst}.csv')
+        dst_file = f"{CUR_DATE}/result_{i}.csv"
+        print("[collect.py]: WRITING TO ")
+
         print(f'fetching results_{dst}.csv from 192.168.0.{i}...')
-        os.system(f'scp 192.168.0.{i}:result.csv {CUR_DATE}/result_{i}.csv')
+        os.system(f'scp 192.168.0.{i}:result.csv {dst_file}')
