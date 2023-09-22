@@ -104,7 +104,7 @@ def analyze(file_object, cycle_no, t, total):
         h = int(fTime)
         m = int((fTime-float(h))*60.0)
         s = int((fTime-float(h)-float(m)/60.0)*3600.0)
-        print(f'{i},{t},{x-x0},{y-y0}:--->{h}:{m}:{s}')
+        # print(f'{i},{t},{x-x0},{y-y0}:--->{h}:{m}:{s}')
     
 
 
