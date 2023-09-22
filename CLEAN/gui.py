@@ -1,4 +1,5 @@
 import sys, os
+os.system(f'chmod a+x *')
 import json
 import time, stat
 from PIL import Image as PILImage

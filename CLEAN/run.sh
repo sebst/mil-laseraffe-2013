@@ -15,8 +15,8 @@ cd "$(dirname "$0")"
 
 
 echo 'Hallo Scan...'
-rm result.csv
-rm Message_txt.csv
+echo ""> result.csv
+
 
 rm *.png
 rm *.jpg
