@@ -4,7 +4,6 @@ import os
 import json
 import numpy as np
 from matplotlib import pyplot as plt
-import argparse
 
 
 def plotData(filename, barcode=""):
@@ -14,15 +13,11 @@ def plotData(filename, barcode=""):
     y1 = []
     y2 = []
 
-    color = ""
-
     #fig,axes = plt.subplots(3,1)
     fig = plt.figure(figsize=(10,5))
     for line in f:
         #print(line)
         data = line.split(',')
-        if not color:
-            color = data[-1]
         data[-1] = data[-1][:-1]
         #print(data)
         x.append(float(data[1]))
@@ -54,22 +49,14 @@ def plotData(filename, barcode=""):
     ax.set_ylabel('y-pos [µm]')
     ax.set_ylim(y2.mean()-2.5,y2.mean()+2.5)
 
-    color_string = f' – COL: {color}' if color else ""
-
-    plt.suptitle(f'{filename} - Ser# {barcode}{color_string}')
+    plt.suptitle(f'{filename} - Ser# {barcode}')
     plt.tight_layout()
     #plt.ylim((y.mean()-1,y.mean()+1))
     plt.savefig(f'{filename[:-4]}.png')
 
 
-def main(DIR=""):
-
-    if DIR:
-        files = os.listdir(DIR)
-        DIR = str(DIR)
-    else:    
-        files = os.listdir()
-        DIR = ""
+def main():
+    files = os.listdir()
 
     barcodes = {}
     try:
@@ -79,17 +66,14 @@ def main(DIR=""):
         pass
 
     for f in files:
-        if 'result_' in f and '.csv' in f:
+        if 'result_' in f and '.csv.lll' in f:
             parts = f.split("_")
             ip_sfx = parts[-1].split(".")[0]
             barcode = barcodes.get(ip_sfx, "N/A")
             print(f'opening {f}....')
             print('Barcodes', barcodes)
-            if DIR:
-                f = DIR + "/" + f
             plotData(f, barcode)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="DESC")
     main()
