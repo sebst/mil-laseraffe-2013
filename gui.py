@@ -66,6 +66,9 @@ class Fullscreen_Window:
         self.tk.bind('<KeyRelease>', self.key_up)
 
     def on_started(self):
+        now = datetime.now()
+        dst = now.strftime("%Y%m%d-%H%M")
+        self._CUR_DATE = dst
         print("on_started called as measurement is started.")
 
 
@@ -216,7 +219,7 @@ class Fullscreen_Window:
                         for key, ip_sfx in self.laserPIKeys.items():    # Identification of pi's steam deck position and pi address (ip_suffix)
                             if ip_sfx == pi: break                      # looking for sfx, but the keys are the key positions 
                         print("pi", pi, "key", key)
-                        os.system(f'./collect.py {ip_sfx}')
+                        os.system(f'./collect.py {ip_sfx} {self._CUR_DATE}')
                         fn = (f'result_{collect_dst}_{ip_sfx}.csv.lll') # What happens, if the .csv is not there?
                         print(fn)
                         green=(0,255,0)
