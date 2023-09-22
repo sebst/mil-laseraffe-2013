@@ -19,6 +19,8 @@ def plotData(filename, barcode=""):
     #fig,axes = plt.subplots(3,1)
     fig = plt.figure(figsize=(10,5))
     for line in f:
+        if not line:
+            continue
         #print(line)
         data = line.split(',')
         if not color:
