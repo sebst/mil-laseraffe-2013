@@ -66,7 +66,7 @@ def main():
         pass
 
     for f in files:
-        if 'result_' in f and '.csv.lll' in f:
+        if 'result_' in f and '.csv' in f:
             parts = f.split("_")
             ip_sfx = parts[-1].split(".")[0]
             barcode = barcodes.get(ip_sfx, "N/A")

@@ -42,3 +42,4 @@ if True: # Set to False for testing purposes -> needs to be set to True
         print(f'...{i}')
     print('...done starting')
 #os.system('sudo shutdown -h')
+
