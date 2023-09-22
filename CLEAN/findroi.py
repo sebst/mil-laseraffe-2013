@@ -46,6 +46,8 @@ def take_picture(exposure=50):
     cam.capture("findroi-prod.png")
     file_object.seek(0)
 
+    cam.close()
+
     return file_object
 
 
