@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 #
-#!/usr/bin/env python3
-#
 import json
 from pathlib import Path
 from picamera import PiCamera as PiC
@@ -41,14 +39,15 @@ def take_picture(exposure=50):
     print('shutter:', cam.exposure_speed, cam.shutter_speed)
 
     file_object = io.BytesIO()
-    cam.capture(file_object, format="png")
-    sleep(1)
+    # cam.capture(file_object, format="png")
+    sleep(3)
     cam.capture("findroi-prod.png")
     file_object.seek(0)
 
     return file_object
 
-
+#take_picture(50)
+#sleep(3)
 def get_x_y_lower_left(image, window_size=1500):
     def odd_int(val):
         val = int(val)
@@ -56,7 +55,8 @@ def get_x_y_lower_left(image, window_size=1500):
             return val + 1
         return val
 
-    image = cv2.imread(image)
+    #image = cv2.imread(image)
+    image = cv2.imread('findroi-prod.png')
     orig = image.copy()
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -75,8 +75,9 @@ def find_roi():
     iw = ih = 1500
 
     try:
-        file_object = take_picture(50)
-        x, y = get_x_y_lower_left(file_object, window_size=int((iw+ih)/2))
+        # file_object = take_picture(50)
+        with open('findroi-prod.png', 'rb') as file_object:
+            x, y = get_x_y_lower_left(file_object, window_size=int((iw+ih)/2))
         return dict(
             ix = x,
             iy = y,
@@ -84,6 +85,7 @@ def find_roi():
             ih = ih,
         )
     except:
+        raise
         return dict(
             ix = 1700,
             iy = 800,
