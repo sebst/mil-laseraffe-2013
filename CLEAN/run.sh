@@ -16,6 +16,7 @@ cd "$(dirname "$0")"
 
 echo 'Hallo Scan...'
 echo ""> result.csv
+# rm result.csv
 
 
 rm *.png
