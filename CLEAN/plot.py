@@ -92,4 +92,7 @@ def main(DIR=""):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="DESC")
-    main()
+    parser.add_argument('curdate', metavar='curdate', type=str, help="Date")
+    args = parser.parse_args()
+    CUR_DATE = args.curdate
+    main(CUR_DATE)
