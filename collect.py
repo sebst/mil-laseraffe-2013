@@ -36,7 +36,7 @@ if __name__=="__main__":
     pis = args.integers
     CUR_DATE = args.curdate
     if not Path(CUR_DATE).exists():
-         Path(CUR_DATE).mkdir()
+         Path(CUR_DATE).mkdir(parents=True, exist_ok=True)
 
 
     for i in pis:
