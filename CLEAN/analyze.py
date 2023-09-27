@@ -21,7 +21,7 @@ ix = lambda: roi.get('ix', 1700)
 iy = lambda: roi.get('iy', 800)
 iw = lambda: roi.get('iw', 1500)
 ih = lambda: roi.get('ih', 1500)
-col= lambda: roi.get('col', "U")
+col= lambda: roi.get('col', "UAN")
 
 def run(filenames):
     result = open('result.csv','a')
@@ -53,7 +53,7 @@ def run(filenames):
         #print("The ellipse diameter (closest to horizontal) is %.0f pixels" % dx)
         #print("The ellipse diameter (closest to   vertical) is %.0f pixels" % dy)
         #print("The ellipse is rotated %.0f° ccw from horizontal" % (phi*180/3.1416))
-        result.write(f'{i},{t},{Int_max},{x},{y},{dx},{dy},{phi*180.0/3.1416}\n')
+        result.write(f'{i},{t},{Int_max},{x},{y},{dx},{dy},{phi*180.0/3.1416},{ix()},{iy()},{iw()},{ih()},{col()},\n')
         now = time()
         tpf = float(now-startT)/float(i+1)
         fTime = float(total-i)*tpf/3600.0

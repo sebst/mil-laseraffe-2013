@@ -97,7 +97,7 @@ def get_x_y_lower_left(image, window_size=1500):
 
     #image = cv2.imread(image)
     image = cv2.imread('findroi-prod.png')
-    orig = image.copy()
+    # orig = image.copy()
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     gray = cv2.GaussianBlur(gray, (odd_int(window_size/10), odd_int(window_size/10)), 0)
@@ -129,13 +129,13 @@ def find_roi():
             pal=pal,
         )
     except:
-        raise
+        # raise
         return dict(
             ix = 1700,
             iy = 800,
             iw = 1500,
             ih = 1500,
-            col="UNKNOWN"
+            col="UFR"
         )
 
 
