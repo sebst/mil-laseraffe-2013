@@ -20,7 +20,7 @@ killall -9 python3
 
 
 echo 'Hallo Scan...'
-rm result.csv
+rm -rf result.csv
 touch result.csv
 rm Message_txt.csv
 
