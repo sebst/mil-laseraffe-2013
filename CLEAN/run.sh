@@ -15,7 +15,7 @@ cd "$(dirname "$0")"
 
 # HALLLO
 
-killall -9 sh
+# killall -9 sh
 killall -9 python
 
 
