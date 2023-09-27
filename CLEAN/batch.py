@@ -21,7 +21,7 @@ print("C", args.cycles)
 print("I", args.interval)
 
 
-# DEF_EXP_TIME = 0.4
+DEF_EXP_TIME = 0.4
 # EXP_TIMES = {
 # 	110:2
 # }
