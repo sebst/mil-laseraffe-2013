@@ -13,6 +13,8 @@
 cd "$(dirname "$0")"
 
 
+# HALLLO
+
 
 echo 'Hallo Scan...'
 rm result.csv

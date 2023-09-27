@@ -21,17 +21,18 @@ print("C", args.cycles)
 print("I", args.interval)
 
 
-DEF_EXP_TIME = 0.4
-EXP_TIMES = {
-	110:2
-}
+# DEF_EXP_TIME = 0.4
+# EXP_TIMES = {
+# 	110:2
+# }
 
 
 if True: # Set to False for testing purposes -> needs to be set to True 
     for i in pis:
         print(f'-----------------------------------')
         print(f'Starting transfer to ({i})')
-        exp_time = EXP_TIMES.get(i, DEF_EXP_TIME)
+        # exp_time = EXP_TIMES.get(i, DEF_EXP_TIME)
+        exp_time = DEF_EXP_TIME
         print(f'Integration time: {exp_time}')
         os.system(f'scp run.sh 192.168.0.{i}:run.sh')
         os.system(f'scp scan.py 192.168.0.{i}:scan.py')
