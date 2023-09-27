@@ -20,7 +20,7 @@ rm Message_txt.csv
 
 rm -rf *.png
 rm -rf *.jpg
-rm -rf *.roi.json
+rm -rf .roi.json
 echo 'Done cleanup'
 ./findroi.py $1 $2 $3 >/dev/null 2>&1
 ./scan.py    $1 $2 $3 >/dev/null 2>&1
