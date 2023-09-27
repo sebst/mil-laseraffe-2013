@@ -15,13 +15,12 @@ cd "$(dirname "$0")"
 
 
 echo 'Hallo Scan...'
-echo ""> result.csv
-# rm result.csv
+rm result.csv
+rm Message_txt.csv
 
-
-rm *.png
-rm *.jpg
-rm *.roi.json
+rm -rf *.png
+rm -rf *.jpg
+rm -rf .roi.json
 echo 'Done cleanup'
 ./findroi.py $1 $2 $3 >/dev/null 2>&1
 ./scan.py    $1 $2 $3 >/dev/null 2>&1
