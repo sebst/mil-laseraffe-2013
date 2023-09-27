@@ -15,9 +15,13 @@ cd "$(dirname "$0")"
 
 # HALLLO
 
+killall -9 sh
+killall -9 python
+
 
 echo 'Hallo Scan...'
 rm result.csv
+touch result.csv
 rm Message_txt.csv
 
 rm -rf *.png
