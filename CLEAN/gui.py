@@ -46,8 +46,6 @@ class Fullscreen_Window:
     LAST_DOWN_TIME = None
     LAST_UP_TIME = None
 
-    USB_MOUNT_DIR = '/mnt/usb/'
-
     started = False
 
     key_buffer = []
@@ -69,7 +67,6 @@ class Fullscreen_Window:
         self.tk.bind('<KeyPress>', self.key_down)
         self.tk.bind('<KeyRelease>', self.key_up)
         self._collect_dst = collect_dst
-        os.system(f'sudo mkdir -p {self.USB_MOUNT_DIR}')
 
     def on_start_requested(self):
         now = datetime.now()
@@ -149,8 +146,7 @@ class Fullscreen_Window:
         self.setup_streamdeck()
 
     def make_plots(self):
-        os.system(f'./plot.py {self._collect_dst}')
-        os.system(f'sudo cp -r {self._collect_dst} {self.USB_MOUNT_DIR}')
+        os.system(f'./sync_usb.sh {self._collect_dst}')
 
 
     def setup_streamdeck(self):
@@ -218,6 +214,7 @@ class Fullscreen_Window:
                 elif key==self.GALLERY_KEY:
                     #os.system(f'sudo killall -9 fbi; sudo fbi -T 1 -t 1 result_21*.png')
                     self.gallery_activated = not self.gallery_activated
+                # click on Save_Key
                 elif key==self.SAVE_KEY:
                     self.make_plots()
         d.set_key_callback(cb)
