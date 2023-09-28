@@ -18,7 +18,7 @@ def plotData(filename, barcode=""):
 
     #fig,axes = plt.subplots(3,1)
     fig = plt.figure(figsize=(10,5))
-    for line in f:
+    for linenum, line in enumerate(f):
         if not line:
             continue
         #print(line)
@@ -35,6 +35,8 @@ def plotData(filename, barcode=""):
         y1.append(float(data[2]))
         y2.append(float(data[3]))
         #print(y)
+    if linenum < 2:
+        return
     x = np.asarray(x)/10.0
     y1 = np.asarray(y1)
     y2 = np.asarray(y2)
