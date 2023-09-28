@@ -11,6 +11,8 @@
 
 cd "$(dirname "$0")"
 
+# Create LOCK FILE
+touch .usb.lock
 # Mount the PenDrive
 sudo mkdir -p /mnt/usb/
 sudo mount /dev/sda1 /mnt/usb
@@ -23,5 +25,7 @@ sudo cp barcodes.json /mnt/usb/$1/ || echo "" > /mnt/usb/$1/barcodes.json
 sudo cp -r $1 /mnt/usb/
 # Unmount the PenDrive
 sudo umount /mnt/usb
+# Remove LOCK FILE
+rm -rf .usb.lock
 
 # EOF

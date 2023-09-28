@@ -5,6 +5,7 @@ import time, stat
 from PIL import Image as PILImage
 from PIL import ImageTk
 import threading
+from pathlib import Path
 
 if sys.version_info[0] == 2:  # Just checking your Python version to import Tkinter properly.
     from Tkinter import *
@@ -54,6 +55,7 @@ class Fullscreen_Window:
     selected_interval = 10
     gallery_activated = False
     run_id = None
+    usb_lock = False
 
     def __init__(self):
         self.lbc = None
@@ -146,6 +148,7 @@ class Fullscreen_Window:
         self.setup_streamdeck()
 
     def make_plots(self):
+        self.usb_lock = True
         os.system(f'./sync_usb.sh {self._collect_dst}')
 
 
@@ -216,7 +219,9 @@ class Fullscreen_Window:
                     self.gallery_activated = not self.gallery_activated
                 # click on Save_Key
                 elif key==self.SAVE_KEY:
-                    self.make_plots()
+                    if not self.usb_lock:
+                        self.make_plots()
+                        set_txt(d, self.SAVE_KEY, 'XXX')
         d.set_key_callback(cb)
 
         for t in threading.enumerate():
@@ -228,6 +233,11 @@ class Fullscreen_Window:
             while True:
                 print("----------- New Collection cycle ----------------")
                 print("while", self.laserPIs.items(), self.started)
+                if Path(".usb.lock").exists():
+                    self.usb_lock = True
+                else: 
+                    self.usb_lock = False
+                    set_txt(d, self.SAVE_KEY, 'save')
                 for pi, is_on in self.laserPIs.items():                 # Laser IDs and state 
                     if is_on and self.started:                          # Check state and if acquisition has started
                         
