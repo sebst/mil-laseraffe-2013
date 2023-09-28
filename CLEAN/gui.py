@@ -246,8 +246,10 @@ class Fullscreen_Window:
                         errorcolor = orange
                         try:
                             with open(fn) as f:
-                                s = sum(1 for line in f)                    # every line equals a measurements -> counting lines results in number over measurements
-                                line = f.readline()
+                                s = 0
+                                for line in f:
+                                    s+=1
+                                # s = sum(1 for line in f)                    # every line equals a measurements -> counting lines results in number over measurements
                                 if "RED" in line:
                                     lasercolor = red
                                 elif "BLUE" in line:
