@@ -36,6 +36,7 @@ class Fullscreen_Window:
     START_KEY = 0
     SHUTDOWN_KEY = 24
     GALLERY_KEY = 16
+    SAVE_KEY = 8
 
     INTERVAL_KEY_0 = 1
     CYCLE_KEY_0 = 2
@@ -44,6 +45,8 @@ class Fullscreen_Window:
 
     LAST_DOWN_TIME = None
     LAST_UP_TIME = None
+
+    USB_MOUNT_DIR = '/mnt/usb/'
 
     started = False
 
@@ -65,6 +68,14 @@ class Fullscreen_Window:
 
         self.tk.bind('<KeyPress>', self.key_down)
         self.tk.bind('<KeyRelease>', self.key_up)
+        self._collect_dst = collect_dst
+        os.system(f'sudo mkdir -p {self.USB_MOUNT_DIR}')
+
+    def on_start_requested(self):
+        now = datetime.now()
+        dst = now.strftime("%Y%m%d-%H%M")
+        self._collect_dst = dst
+        print("About to start")
 
     def on_started(self):
         print("on_started called as measurement is started.")
@@ -137,6 +148,11 @@ class Fullscreen_Window:
         self.stream_deck = d
         self.setup_streamdeck()
 
+    def make_plots(self):
+        os.system(f'./plot.py {self._collect_dst}')
+        os.system(f'sudo cp -r {self._collect_dst} {self.USB_MOUNT_DIR}')
+
+
     def setup_streamdeck(self):
         assert self.stream_deck is not None
         d = self.stream_deck
@@ -146,6 +162,7 @@ class Fullscreen_Window:
         set_txt(d, self.START_KEY, 'start')
         set_txt(d, self.SHUTDOWN_KEY, 'shutdown')
         set_txt(d, self.GALLERY_KEY, 'gallery')
+        set_txt(d, self.SAVE_KEY, 'save')
         [set_txt(d, self.INTERVAL_KEY_0+8*i , "I\n%s"%(v),  bg_color=((0,0,255) if i>0 else (0,0,0))) for i, v in enumerate([10,30,45,60])]
         [set_txt(d, self.CYCLE_KEY_0+8*i,     "C\n%0.e"%(v),  bg_color=((0,0,255) if i>0 else (0,0,0))) for i, v in enumerate([100, 1000, 10000, 100000])]
         ## Callback definition
@@ -169,6 +186,7 @@ class Fullscreen_Window:
                     set_green(deck, key) if on else set_red(deck, key)
                 # click on Start_Key
                 elif key == self.START_KEY and not self.started:
+                    self.on_start_requested()
                     set_red(d, self.START_KEY)
                     pis = [str(k) for k,v in self.laserPIs.items() if v]
                     pis = " ".join(pis)
@@ -200,6 +218,8 @@ class Fullscreen_Window:
                 elif key==self.GALLERY_KEY:
                     #os.system(f'sudo killall -9 fbi; sudo fbi -T 1 -t 1 result_21*.png')
                     self.gallery_activated = not self.gallery_activated
+                elif key==self.SAVE_KEY:
+                    self.make_plots()
         d.set_key_callback(cb)
 
         for t in threading.enumerate():
@@ -217,8 +237,9 @@ class Fullscreen_Window:
                         for key, ip_sfx in self.laserPIKeys.items():    # Identification of pi's steam deck position and pi address (ip_suffix)
                             if ip_sfx == pi: break                      # looking for sfx, but the keys are the key positions 
                         print("pi", pi, "key", key)
-                        os.system(f'./collect.py {ip_sfx} {collect_dst}')
-                        fn = (f'{collect_dst}/result_{ip_sfx}.csv') # What happens, if the .csv is not there?
+                        
+                        os.system(f'./collect.py {ip_sfx} {self._collect_dst}')
+                        fn = (f'{self._collect_dst}/result_{ip_sfx}.csv') # What happens, if the .csv is not there?
                         print(fn)
                         green=(0,255,0)
                         red=(255,0,0)
