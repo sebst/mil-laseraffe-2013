@@ -73,8 +73,13 @@ def find_col(file_object, palette_size=16):
 
     print("dominant_color", dominant_color)
 
-    is_red = dominant_color[0] > 0 and dominant_color[1] < 1 and dominant_color[2] < 1
-    is_blue = dominant_color[0] < 1 and dominant_color[1] < 1 and dominant_color[2] > 0
+    red, green, blue = dominant_color
+
+    is_red = red >= (blue*2) and red >= (green*2)
+    is_blue = blue >= (red*2) and blue >= (green*2)
+
+    # is_red = dominant_color[0] > 0 and dominant_color[1] < 1 and dominant_color[2] < 1
+    # is_blue = dominant_color[0] < 1 and dominant_color[1] < 1 and dominant_color[2] > 0
 
     if is_red and not is_blue:
         return "RED", dominant_color
