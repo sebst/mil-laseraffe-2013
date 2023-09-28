@@ -244,6 +244,7 @@ class Fullscreen_Window:
                         orange=(255,140,0)
                         lasercolor = green
                         errorcolor = orange
+                        line = None
                         try:
                             with open(fn) as f:
                                 s = 0
@@ -254,6 +255,8 @@ class Fullscreen_Window:
                                     lasercolor = red
                                 elif "BLUE" in line:
                                     lasercolor = blue
+                                else:
+                                    lasercolor = green
                         except:
                             pass                                            # If file does not exist, we do not raise an Exception here
                         seconds = time.time() - os.stat(fn)[stat.ST_MTIME]
