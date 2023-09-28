@@ -18,6 +18,7 @@ def plotData(filename, barcode=""):
 
     #fig,axes = plt.subplots(3,1)
     fig = plt.figure(figsize=(10,5))
+    linenum = 0
     for linenum, line in enumerate(f):
         if not line:
             continue
