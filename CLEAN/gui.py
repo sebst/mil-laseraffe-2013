@@ -256,6 +256,7 @@ class Fullscreen_Window:
                         errorcolor = orange
                         line = None
                         s = 0
+                        unknown = False
                         try:
                             with open(fn) as f:
                                 s = 0
@@ -267,7 +268,8 @@ class Fullscreen_Window:
                                 elif "BLUE" in line:
                                     lasercolor = blue
                                 else:
-                                    lasercolor = green
+                                    lasercolor = orange
+                                    unknown = True
                         except:
                             pass                                            # If file does not exist, we do not raise an Exception here
                         try:
