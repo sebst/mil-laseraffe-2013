@@ -255,6 +255,7 @@ class Fullscreen_Window:
                         lasercolor = green
                         errorcolor = orange
                         line = None
+                        s = 0
                         try:
                             with open(fn) as f:
                                 s = 0
@@ -275,6 +276,8 @@ class Fullscreen_Window:
                             seconds = 100
                         color = lasercolor if seconds < 60 else errorcolor
                         set_txt(d, key+8, str(s), bg_color=color)
+                        if s == self.selected_cycle:
+                            set_txt(d, key+8, str('R'), bg_color=color)
                 sleep(5)
             d.close()
         upd_thread = threading.Thread(target=update)
