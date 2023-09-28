@@ -12,7 +12,7 @@ fi
 cd "$(dirname "$0")"
 
 
-
+cp barcodes.json $1/ || echo "" > $1/barcodes.json
 sudo mkdir -p /mnt/usb
 sudo mount /dev/sda1 /mnt/usb
 python3 plot.py $1
