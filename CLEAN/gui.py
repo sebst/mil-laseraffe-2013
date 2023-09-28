@@ -240,13 +240,22 @@ class Fullscreen_Window:
                         print(fn)
                         green=(0,255,0)
                         red=(255,0,0)
+                        blue=(0,0,255)
+                        orange=(255,140,0)
+                        lasercolor = green
+                        errorcolor = orange
                         try:
                             with open(fn) as f:
                                 s = sum(1 for line in f)                    # every line equals a measurements -> counting lines results in number over measurements
+                                line = f.readline()
+                                if "RED" in line:
+                                    lasercolor = red
+                                elif "BLUE" in line:
+                                    lasercolor = blue
                         except:
                             pass                                            # If file does not exist, we do not raise an Exception here
                         seconds = time.time() - os.stat(fn)[stat.ST_MTIME]
-                        color = green if seconds < 60 else red
+                        color = lasercolor if seconds < 60 else errorcolor
                         set_txt(d, key+8, str(s), bg_color=color)
                 sleep(5)
             d.close()
