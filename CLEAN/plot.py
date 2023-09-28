@@ -29,12 +29,13 @@ def plotData(filename, barcode=""):
         data[-1] = data[-1][:-1]
         #print(data)
         try:
-            _ = data[1], data[2], data[3]
+            _ = data[1], data[2], data[3], data[4]
         except:
             continue
+        # i, t, int_max, x, y, dx, dy, phi, ix, iy, iw, ih, col
         x.append(float(data[1]))
-        y1.append(float(data[2]))
-        y2.append(float(data[3]))
+        y1.append(float(data[3]))
+        y2.append(float(data[4]))
         #print(y)
     if linenum < 2:
         return
@@ -76,7 +77,7 @@ def main(DIR=""):
     if DIR:
         files = os.listdir(DIR)
         DIR = str(DIR)
-    else:    
+    else:
         files = os.listdir()
         DIR = ""
 
