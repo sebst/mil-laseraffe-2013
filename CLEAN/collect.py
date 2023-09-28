@@ -44,7 +44,9 @@ if __name__=="__main__":
 
     for i in pis:
         dst_file = f"{CUR_DATE}/result_{i}.csv"
+        dst_file_roi = f"{CUR_DATE}/result_{i}.roi"
         print(f"[collect.py]: WRITING TO {dst_file}")
 
         print(f'fetching results_{dst}.csv from 192.168.0.{i}...')
         os.system(f'scp 192.168.0.{i}:result.csv {dst_file}')
+        os.system(f'scp 192.168.0.{i}:.roi.json {dst_file_roi}')

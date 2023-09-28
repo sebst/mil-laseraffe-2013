@@ -247,6 +247,8 @@ class Fullscreen_Window:
                         
                         os.system(f'./collect.py {ip_sfx} {self._collect_dst}')
                         fn = (f'{self._collect_dst}/result_{ip_sfx}.csv') # What happens, if the .csv is not there?
+                        # dst_file_roi = f"{CUR_DATE}/result_{i}.roi"
+                        fn_roi = (f'{self._collect_dst}/result_{ip_sfx}.roi') # What happens, if the .csv is not there?
                         print(fn)
                         green=(0,255,0)
                         black=(0,0,0)
@@ -258,6 +260,8 @@ class Fullscreen_Window:
                         line = None
                         s = 0
                         unknown = False
+                        roi_unknown = False
+
                         try:
                             with open(fn) as f:
                                 s = 0
@@ -273,13 +277,21 @@ class Fullscreen_Window:
                                     unknown = True
                         except:
                             pass                                            # If file does not exist, we do not raise an Exception here
+
                         try:
                             seconds = time.time() - os.stat(fn)[stat.ST_MTIME]
                         except:
                             seconds = 100
+
+                        try:
+                            with open(fn_roi) as f_roi:
+                                roi = json.load(f_roi)
+                            roi_unknown = roi.get("col") not in ("RED", "BLUE")
+                        except:
+                            pass
                         color = lasercolor if seconds < 60 else errorcolor
                         set_txt(d, key+8, str(s), bg_color=color)
-                        if s > 0 and unknown:
+                        if roi_unknown:
                             set_txt(d, key+8, str('///'), bg_color=orange)
                         if s == self.selected_cycle:
                             set_txt(d, key+8, str('R'), bg_color=black, border_color=lasercolor)
