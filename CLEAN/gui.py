@@ -220,8 +220,8 @@ class Fullscreen_Window:
                 # click on Save_Key
                 elif key==self.SAVE_KEY:
                     if not self.usb_lock:
-                        self.make_plots()
                         set_txt(d, self.SAVE_KEY, 'XXX')
+                        self.make_plots()
         d.set_key_callback(cb)
 
         for t in threading.enumerate():
@@ -279,6 +279,8 @@ class Fullscreen_Window:
                             seconds = 100
                         color = lasercolor if seconds < 60 else errorcolor
                         set_txt(d, key+8, str(s), bg_color=color)
+                        if s > 0 and unknown:
+                            set_txt(d, key+8, str('///'), bg_color=orange)
                         if s == self.selected_cycle:
                             set_txt(d, key+8, str('R'), bg_color=black, border_color=lasercolor)
                 sleep(5)

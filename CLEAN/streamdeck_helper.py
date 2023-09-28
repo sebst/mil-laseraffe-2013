@@ -46,12 +46,13 @@ def set_txt(d, i, txt, bg_color=(0,0,255), border_color=None):
     image = Image.new('RGB', (96,96), bg_color)
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype("NotoMono-Regular.ttf", 32)
-    draw.text((0, 0), str(txt), (255, 255, 255), font=font)
     if border_color:
-        draw.line((0,0, 0,96), fill=border_color, width=5)
-        draw.line((0,0, 96,0), fill=border_color, width=5)
-        draw.line((96,0, 96,96), fill=border_color, width=5)
-        draw.line((0,96, 96,96), fill=border_color, width=5)
+        width = 12
+        draw.line((0,0, 0,96),   fill=border_color, width=width)
+        draw.line((0,0, 96,0),   fill=border_color, width=width)
+        draw.line((96,0, 96,96), fill=border_color, width=width)
+        draw.line((0,96, 96,96), fill=border_color, width=width)
+    draw.text((0, 0), str(txt), (255, 255, 255), font=font)
     d.set_key_image(i, PILHelper.to_native_format(d, image))
 
 def deckInfo(index,deck):
