@@ -13,8 +13,8 @@ from PIL import Image
 
 
 
-def take_picture(exposure=50):
-    n = 3
+def take_picture(exposure=5):
+    n = 1
 
     """ enter exposure time in s """
     # exposure = 0.5 # args.exp_time # 0.5
