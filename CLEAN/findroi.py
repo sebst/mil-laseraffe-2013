@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 #
-#!/usr/bin/env python3
-#
+
 import json
 from pathlib import Path
 from picamera import PiCamera as PiC
@@ -10,10 +9,10 @@ import io
 from time import sleep, time
 import cv2
 from PIL import Image
+import numpy as np
 
 
-
-def take_picture(exposure=5):
+def take_picture(exposure=3):
     n = 1
 
     """ enter exposure time in s """
@@ -21,7 +20,9 @@ def take_picture(exposure=5):
     """ frameRate is between 1/10 fps and 15fps """
     fRate = min(max(1.0/exposure,0.1),15.0)
 
-    # if exposure >= 10.0: exposure = 10.0
+    if exposure >= 10.0: exposure = 10.0
+
+    exposure = int(exposure*1_000_000)
 
     cam = PiC(sensor_mode=3, framerate=fRate)
     #cam = PiC(sensor_mode=3)
@@ -81,19 +82,70 @@ def find_col(file_object, palette_size=16):
     # is_red = dominant_color[0] > 0 and dominant_color[1] < 1 and dominant_color[2] < 1
     # is_blue = dominant_color[0] < 1 and dominant_color[1] < 1 and dominant_color[2] > 0
 
+    #red, green, blue = int(red), int(green), int(blue)
+
     if is_red and not is_blue:
         return "RED", dominant_color
     elif is_blue and not is_red:
         return "BLUE" , dominant_color
-    else:    
+    else:
         return "UNKNOWN", dominant_color
+
+
+
+def find_col2(file_object, palette_size=16):
+    print("find_col")
+
+    file_object.seek(0)
+    # Resize image to speed up processing
+    # pil_img = Image.open(file_object)
+    pil_img = Image.open('findroi-prod.png')
+    img = pil_img.copy()
+    img.thumbnail((100, 100))
+
+    data = np.array(img)
+    print(data.shape)
+    data = data.max(axis=1).max(axis=0)
+    print(data)
+    # Reduce colors (uses k-means internally)
+    #paletted = img.convert('P', palette=Image.ADAPTIVE, colors=palette_size)
+
+    # Find the color that occurs most often
+    #palette = paletted.getpalette()
+    #color_counts = sorted(paletted.getcolors(), reverse=True)
+    #palette_index = color_counts[0][1]
+    #dominant_color = palette[palette_index*3:palette_index*3+3]
+
+    dominant_color = data
+
+    print("dominant_color", dominant_color)
+
+
+    red, green, blue, _ = dominant_color
+    red, green, blue = int(red), int(green), int(blue)
+
+    is_red = red >= (blue*2) and red > 20
+    is_blue = blue >= (red*2) and blue > 20
+
+    # is_red = dominant_color[0] > 0 and dominant_color[1] < 1 and dominant_color[2] < 1
+    # is_blue = dominant_color[0] < 1 and dominant_color[1] < 1 and dominant_color[2] > 0
+
+    if is_red and not is_blue:
+        return "RED", (red, green, blue)
+    elif is_blue and not is_red:
+        return "BLUE" , (red, green, blue)
+    else:
+        return "UNKNOWN", (red, green, blue)
+
+
+
 
 
 
 def get_x_y_lower_left(image, window_size=1500):
 
     print("get_x_y_lower_left")
-    
+
     def odd_int(val):
         val = int(val)
         if val % 2 == 0:
@@ -122,9 +174,9 @@ def find_roi():
     print("find_roi")
 
     try:
-        file_object = take_picture(50)
+        file_object = take_picture(3)
         x, y = get_x_y_lower_left(file_object, window_size=int((iw+ih)/2))
-        col, pal = find_col(file_object)
+        col, pal = find_col2(file_object)
         return dict(
             ix = x,
             iy = y,
