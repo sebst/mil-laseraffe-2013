@@ -240,7 +240,7 @@ class Fullscreen_Window:
                         print(fn)
                         green=(0,255,0)
                         red=(255,0,0)
-                        blue=(0,0,255)
+                        blue=(75,0,130)
                         orange=(255,140,0)
                         lasercolor = green
                         errorcolor = orange
