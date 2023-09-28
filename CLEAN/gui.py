@@ -249,6 +249,7 @@ class Fullscreen_Window:
                         fn = (f'{self._collect_dst}/result_{ip_sfx}.csv') # What happens, if the .csv is not there?
                         print(fn)
                         green=(0,255,0)
+                        black=(0,0,0)
                         red=(255,0,0)
                         blue=(75,0,130)
                         orange=(255,140,0)
@@ -279,7 +280,7 @@ class Fullscreen_Window:
                         color = lasercolor if seconds < 60 else errorcolor
                         set_txt(d, key+8, str(s), bg_color=color)
                         if s == self.selected_cycle:
-                            set_txt(d, key+8, str('R'), bg_color=color)
+                            set_txt(d, key+8, str('R'), bg_color=black, border_color=lasercolor)
                 sleep(5)
             d.close()
         upd_thread = threading.Thread(target=update)
