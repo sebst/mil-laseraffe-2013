@@ -240,8 +240,11 @@ class Fullscreen_Window:
                         print(fn)
                         green=(0,255,0)
                         red=(255,0,0)
-                        with open(fn) as f:
-                            s = sum(1 for line in f)                    # every line equals a measurements -> counting lines results in number over measurements
+                        try:
+                            with open(fn) as f:
+                                s = sum(1 for line in f)                    # every line equals a measurements -> counting lines results in number over measurements
+                        except:
+                            pass                                            # If file does not exist, we do not raise an Exception here
                         seconds = time.time() - os.stat(fn)[stat.ST_MTIME]
                         color = green if seconds < 60 else red
                         set_txt(d, key+8, str(s), bg_color=color)
