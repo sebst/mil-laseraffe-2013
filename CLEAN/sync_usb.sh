@@ -18,11 +18,14 @@ sudo mkdir -p /mnt/usb/
 sudo mount /dev/sda1 /mnt/usb
 # Create the target directory
 sudo mkdir -p /mnt/usb/$1
+#mkdir -p /media/pi/ACA6-9E9E/$1
 # Run the plotter
 python3 plot.py $1
 # Copy relevant files
 sudo cp barcodes.json /mnt/usb/$1/ || echo "" > /mnt/usb/$1/barcodes.json
+#cp barcodes.json /media/pi/ACA6-9E9E/$1 || echo "" > /media/pi/ACA6-9E9E/$1/barcodes.json
 sudo cp -r $1 /mnt/usb/
+#cp -r $1 /media/pi/ACA6-9E9E/
 # Unmount the PenDrive
 sudo umount /mnt/usb
 # Remove LOCK FILE

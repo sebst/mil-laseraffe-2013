@@ -80,6 +80,13 @@ class Fullscreen_Window:
         print("on_started called as measurement is started.")
 
 
+    def on_ready(self):
+        print("I am READY")
+        self.started = False
+        # self.setup_streamdeck()
+        d = self.stream_deck
+        set_txt(d, self.START_KEY, 'start')
+
     def set_barcode(self, lbc):
         self.lbc = lbc
         print("self.lbc", lbc)
@@ -238,7 +245,10 @@ class Fullscreen_Window:
                 else: 
                     self.usb_lock = False
                     set_txt(d, self.SAVE_KEY, 'save')
-                for pi, is_on in self.laserPIs.items():                 # Laser IDs and state 
+                ready_states = []
+                for pi, is_on in self.laserPIs.items():                 # Laser IDs and state
+                    if not is_on:
+                        ready_states.append(1)
                     if is_on and self.started:                          # Check state and if acquisition has started
                         
                         for key, ip_sfx in self.laserPIKeys.items():    # Identification of pi's steam deck position and pi address (ip_suffix)
@@ -294,8 +304,12 @@ class Fullscreen_Window:
                         if roi_unknown:
                             # set_txt(d, key+8, str('///'), bg_color=orange)
                             set_error(d, key+8)
+                            ready_states.append(1)
                         if s == self.selected_cycle:
                             set_txt(d, key+8, str('R'), bg_color=black, border_color=lasercolor)
+                            ready_states.append(1)
+                if sum(ready_states) == 10:
+                    self.on_ready()
                 sleep(5)
             d.close()
         upd_thread = threading.Thread(target=update)
