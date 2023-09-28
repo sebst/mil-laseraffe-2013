@@ -259,7 +259,10 @@ class Fullscreen_Window:
                                     lasercolor = green
                         except:
                             pass                                            # If file does not exist, we do not raise an Exception here
-                        seconds = time.time() - os.stat(fn)[stat.ST_MTIME]
+                        try:
+                            seconds = time.time() - os.stat(fn)[stat.ST_MTIME]
+                        except:
+                            seconds = 100
                         color = lasercolor if seconds < 60 else errorcolor
                         set_txt(d, key+8, str(s), bg_color=color)
                 sleep(5)
