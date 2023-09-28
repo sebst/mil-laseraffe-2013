@@ -35,6 +35,12 @@ def set_yellow(d, i):
     image = Image.open("affe3.png").convert("RGB")
     d.set_key_image(i, PILHelper.to_native_format(d, image))
 
+def set_error(d, i):
+    image = Image.new('RGB', (96,96), (255,255,0))
+    image = Image.open("cross.png").convert("RGB")
+    d.set_key_image(i, PILHelper.to_native_format(d, image))
+
+
 
 def set_green(d,i):
     image = Image.new('RGB', (96,96), (9,255,0))

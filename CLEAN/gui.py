@@ -17,7 +17,7 @@ from datetime import timedelta, datetime
 import glob
 from collect import dst as collect_dst
 
-from streamdeck_helper import set_black, set_red, set_yellow, set_green, set_txt, deckInfo
+from streamdeck_helper import set_black, set_red, set_yellow, set_green, set_txt, deckInfo, set_error
 class Fullscreen_Window:
 
     laserPIs = {i: False for i in range(101, 111)}
@@ -292,7 +292,8 @@ class Fullscreen_Window:
                         color = lasercolor if seconds < 60 else errorcolor
                         set_txt(d, key+8, str(s), bg_color=color)
                         if roi_unknown:
-                            set_txt(d, key+8, str('///'), bg_color=orange)
+                            # set_txt(d, key+8, str('///'), bg_color=orange)
+                            set_error(d, key+8)
                         if s == self.selected_cycle:
                             set_txt(d, key+8, str('R'), bg_color=black, border_color=lasercolor)
                 sleep(5)
