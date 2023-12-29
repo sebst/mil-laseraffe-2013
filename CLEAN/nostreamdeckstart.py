@@ -2,22 +2,15 @@ import sys, os
 os.system(f'chmod a+x *')
 import json
 import time, stat
-from PIL import Image as PILImage
-from PIL import ImageTk
+
 import threading
 from pathlib import Path
 
-if sys.version_info[0] == 2:  # Just checking your Python version to import Tkinter properly.
-    from Tkinter import *
-else:
-    from tkinter import *
-from tkinter import ttk
+from tkinter import *
 from time import sleep
-from datetime import timedelta, datetime
-import glob
+from datetime import datetime
 from collect import dst as collect_dst
 
-from streamdeck_helper import set_black, set_red, set_yellow, set_green, set_txt, deckInfo, set_error
 class Fullscreen_Window:
 
     laserPIs = {i: False for i in range(101, 111)}
@@ -33,19 +26,7 @@ class Fullscreen_Window:
         22: 109,
         23: 110
     }
-    # Streamdeck has codes for each key -> Allocation of info which key belongs to which func
-    START_KEY = 0
-    SHUTDOWN_KEY = 24
-    GALLERY_KEY = 16
-    SAVE_KEY = 8
 
-    INTERVAL_KEY_0 = 1
-    CYCLE_KEY_0 = 2
-
-    LONG_PRESS_MS = 500
-
-    LAST_DOWN_TIME = None
-    LAST_UP_TIME = None
 
     started = False
 
@@ -60,14 +41,11 @@ class Fullscreen_Window:
     def __init__(self):
         self.lbc = None
         root = self.tk = Tk()
-        self.barcodes={}
 
-        canvas = Canvas(self.tk, width = 300, height = 300, border=1)
+        canvas = Canvas(self.tk, width=300, height=300, border=1)
         self.canvas = canvas
         self.canvas.pack()
 
-        self.tk.bind('<KeyPress>', self.key_down)
-        self.tk.bind('<KeyRelease>', self.key_up)
         self._collect_dst = collect_dst
 
     def on_start_requested(self):
@@ -79,7 +57,6 @@ class Fullscreen_Window:
     def on_started(self):
         print("on_started called as measurement is started.")
 
-
     def on_ready(self):
         print("I am READY")
         self.started = False
@@ -89,11 +66,11 @@ class Fullscreen_Window:
         os.system(f'./sync_usb.sh {self._collect_dst}')
 
     def setup_measurement(self):
-
         self.selected_cycle = 100
         self.selected_interval = 10
         self.laserPIs = {i: False for i in range(101, 111)}
         self.laserPIs[101]: True
+        self.laserPIs[102]: True
 
         def start():
             self.on_start_requested()
@@ -104,7 +81,6 @@ class Fullscreen_Window:
             os.system(f'./batch.py {pis} {self.selected_cycle} {self.selected_interval}')
             self.started = True
             self.on_started()
-
         start()
 
         for t in threading.enumerate():
@@ -145,10 +121,9 @@ class Fullscreen_Window:
                                 s = 0
                                 for line in f:
                                     s+=1
-                                # s = sum(1 for line in f)                    # every line equals a measurements -> counting lines results in number over measurements
 
                         except:
-                            pass                                            # If file does not exist, we do not raise an Exception here
+                            pass
 
                         try:
                             seconds = time.time() - os.stat(fn)[stat.ST_MTIME]
@@ -175,7 +150,5 @@ class Fullscreen_Window:
 
 if __name__ == '__main__':
     w = Fullscreen_Window()
-
     w.gallery_activated = False
-
     w.tk.mainloop()
