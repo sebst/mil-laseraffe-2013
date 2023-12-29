@@ -52,12 +52,15 @@ interval = args.interval
 
 """ enter cycles """
 cycles = args.cycle
-ranges = [int((_i)*cycles/len(temps)) for _i in range(len(temps))]
 
 """ enter exposure time in s """
 exposure = args.exp_time # 0.5
+
 """ frameRate is between 1/10 fps and 15fps """
 fRate = min(max(1.0/exposure,0.1),15.0)
+
+"""Calculate ranges for temperature settings."""
+ranges = [int((_i)*cycles/len(temps)) for _i in range(len(temps))]
 
 if exposure >= 10.0: exposure = 10.0
 
@@ -70,17 +73,17 @@ print(f'executing scan with {cycles}: {int(duration)}:{int((duration-float(int(d
 
 cam = PiC(sensor_mode=3, framerate=fRate)
 
-cam.resolution='4056x3040'
-cam.exposure_mode='off'
-cam.shutter_speed= int(exposure/40)
+cam.resolution = '4056x3040'
+cam.exposure_mode = 'off'
+cam.shutter_speed = int(exposure/40)
 cam.iso = 100
 
-g = (Fraction(1,1),Fraction(1,1))
+g = (Fraction(1, 1), Fraction(1, 1))
 cam.awb_mode = 'off'
 sleep(0.5)
 cam.awb_gains = g
-print('WB-gains:',g)
-print('shutter:',cam.exposure_speed,cam.shutter_speed)
+print('WB-gains:', g)
+print('shutter:', cam.exposure_speed, cam.shutter_speed)
 
 print('snapping')
 sleep(2)
@@ -89,7 +92,7 @@ startT = time()
 
 
 for i in range(cycles):
-    while(time()< startT+float(i*interval)):
+    while time() < startT+float(i*interval):
         sleep(0.1)
     tStr = f'{int(10*(time()-startT))}'
     file_object = io.BytesIO()
@@ -111,8 +114,7 @@ for i in range(cycles):
     x.start()
     threads.append(x)
 
-    
-    
+
 for t in threads:
     t.join()
 
