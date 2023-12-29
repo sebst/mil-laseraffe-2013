@@ -150,9 +150,10 @@ class Fullscreen_Window:
 
     stream_deck = None
     def set_streamdeck(self, d):
-        print("set stream deck")
+        print("set stream deck 153")
         self.stream_deck = d
         self.setup_streamdeck()
+        print("156")
 
     def make_plots(self):
         self.usb_lock = True
@@ -362,6 +363,7 @@ def gallery(window):
 
 
 if __name__ == '__main__':
+    print("HELLO")
     w = Fullscreen_Window()
 
     from threading import Thread
@@ -377,9 +379,9 @@ if __name__ == '__main__':
         for i,d in enumerate(sd):
             d.open()
             d.reset()
-            deckInfo(i,d)
+            # deckInfo(i,d)
             # d.close()
-        print(i)
+        # print(i)
         deckInfo(0, d)
         return d
     w.set_streamdeck(sd())
