@@ -43,6 +43,7 @@ def set_error(d, i):
 
 
 def set_green(d,i):
+    print("Setgreen at ",i)
     image = Image.new('RGB', (96,96), (9,255,0))
     image = Image.open("affe1.png").convert("RGB")
     d.set_key_image(i, PILHelper.to_native_format(d, image))
