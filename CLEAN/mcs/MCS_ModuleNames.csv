@@ -1,0 +1,118 @@
+#CanID;Name
+0x401;Stepper Valve 1
+0x402;Stepper Valve 2
+0x403;Stepper Valve 3
+0x404;Stepper Valve 4
+0x405;Stepper Valve 5
+0x406;FLD-Stepper-Pump
+0x407;Schrittmotor-Pumpe/BEIM MQ Magnet-1
+0x408;Magnet-1 (undefined)
+0x409;Magnet-2 (undefined)
+0x40A;XYZ-Code Reader
+0x40B;Solenoid Module 00
+0x40C;- free, not used
+0x40D;XYZ-CAM
+0x40E;XYZ-LOCK1
+0x40F;XYZ-LOCK2
+0x411;XYZ-Piezo-Drive
+0x412;Needle Arm Y
+0x413;Needle Arm Z
+0x414;Servo Pump (Research: Frank Liebig)
+0x415;Servo Pump (Research: Frank Liebig)
+0x417;Needle-Mixer
+0x418;Waste pump. Dual servo board
+0x419;Waste pump. Dual servo board
+0x41A;Waste-DC-Pump
+0x41B;Rack detection
+;
+0x420;WhisperIT laser board, Boot
+0x421;Tyto: WhisperIT laser board 1 or MQ: UV Laser
+0x422;WhisperIT laser board 2
+0x423;Tyto: WhisperIT laser board 3 or MQ: Red/Blue Laser
+;
+0x424;FLD-Fan
+0x425;Laser Base Board
+0x427;FLD-Liquid Detection
+;
+0x431;Kolben-Pumpe-1 (Diluter)
+0x432;Kolben-Pumpe-2 (Diluter)
+0x433;Druck-Sensor (Prototype)
+0x436;FLD-DC-Pump
+;
+0x437;FLD-Pinch-Valves
+;
+0x438;LEDs1 Door
+0x439;LEDs2 Bottles
+0x43A;Flaschen-FÅll-Sensoren
+0x43B;FLD-Pressure-Sensor
+0x43C;Power LED Board
+;
+0x441;BSS-Board
+;
+0x448;LEDs1 Door Temperature
+0x449;LEDs2 Bottles Temperature
+;
+0x451;Remote-Port-Board. Ventil
+0x452;Remote-Port-Board. Pumpe
+0x453;HTS-Board. Schrittmotor-Pumpe
+0x454;VES-Board
+0x455;Stepper Module Boot
+0x456;Stepper Magnet 1
+0x457;Stepper Magnet 2
+0x458;Stepper Pump
+0x460;PNM Boot
+0x461;PNM
+0x462;PNM
+0x463;PNM
+0x464;PNM
+0x465;PNM
+0x466;PNM
+0x467;PNM
+0x468;PNM
+;
+0x470;CPC-Sample Drive
+0x471;CPC-Vacuum
+0x472;CPC-Compressor
+0x473;CPC-Waste Line
+;
+0x474;FAN-CIO-Fan1
+0x475;FAN-CIO-Fan2
+0x476;FAN-CIO-Fan3
+0x477;FAN-CIO-Fan4
+0x478;FAN-CIO-PM power monitoring
+;
+0x491;Mini-Sampler
+0x491;ICP: Kamera-Fokus
+0x494;DualServo 625
+0x495;DualServo 625
+0x496;DualServo 625
+0x497;DualServo 625
+0x498;DualServo 625
+0x499;DualServo 625
+0x49F;Sampler Carriage
+;
+0x4A1;Sampler Carriage Shaker (old Auto-Sampler (Achse))
+0x4A2;Sampler Carriage Shaker (Auto-Sampler (Shaker))
+0x4A3;Sampler Carriage Shaker (Auto-Sampler (Schlitten))
+;
+0x4B1;TEC
+0x4B2;Gas Mix
+0x4B3;Pump
+0x4B4;Valves
+0x4B5;Servo
+0x4B6;Slider
+0x4B7;Magnet
+0x4B8;Coverlock
+0x4B9;Backplane-Connector
+0x4BA;MCS_Camera
+0x4BB;Miscellaneous
+0x4BC;FLL boot
+0x4BD;FLL Flash light module
+0x4BE;FLH Flash light heater
+0x4BF;Interlayer camera, Kamera-Fokus-Boot-Modul
+0x4C0;Microscope camera
+0x4C1;EP-Board (Prototype)
+0x4C2;EP Magnetic Valve (Board 1)
+0x4C3;EP (reserviert)
+0x4CF;External Temperature Sensor Board
+0x4F1;Foot-Switch (Production)
