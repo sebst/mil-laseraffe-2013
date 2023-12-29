@@ -12,6 +12,8 @@ import threading
 
 import argparse
 
+import json
+
 parser = argparse.ArgumentParser(description="DESC")
 parser.add_argument('cycle', metavar='cycle', type=int)
 parser.add_argument('interval', metavar='interval', type=int)
@@ -23,11 +25,24 @@ args = parser.parse_args()
 temps = [22.0, 22.25, 22.5, 22.75, 23.0, 23.25, 23.5, 23.75, 24.0, 24.25, 24.5]
 
 
+def update_roi(key, value):
+    with open(".roi.json", "r") as f:
+        roi = json.load(f)
+    roi[key] = value
+    with open(".roi.json", "w") as f:
+        json.dump(roi, f)
+
 def read_temp():
-    pass
+    t = 0
+    try:
+        with open("read_tmp.float", "r") as f:
+            t = float(f.read())
+    except:
+        pass
+    update_roi(read_temp, t)
 
 def set_temp(target):
-    pass
+    update_roi("target_tmp", target)
 
 
 threads = []

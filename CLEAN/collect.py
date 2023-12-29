@@ -7,7 +7,7 @@ import argparse
 from pathlib import Path
 
 from datetime import datetime
-
+import json
 
 base = 'media/stick'
 dst = '211129'
@@ -19,11 +19,13 @@ fullDir = os.path.join(base,dst)
 
 
 
-#if not os.path.isdir(fullDir):
-#    print(f'creating {fullDir}')
-#    os.system(f'sudo mkdir {fullDir}')
+def read_temp(i):
+    """CAN logic here"""
+    pass
 
-
+def set_temp(i, target):
+    """CAN logic here"""
+    pass
 
 
 if __name__=="__main__":
@@ -50,3 +52,13 @@ if __name__=="__main__":
         print(f'fetching results_{dst}.csv from 192.168.0.{i}...')
         os.system(f'scp 192.168.0.{i}:result.csv {dst_file}')
         os.system(f'scp 192.168.0.{i}:.roi.json {dst_file_roi}')
+
+        t = read_temp(i)
+        with open(f"read_tmp.float.{i}", "w+") as f:
+            f.write(str(t))
+        os.system(f'scp read_tmp.float.{i} 192.168.0.{i}:read_tmp.float')
+
+        with open(dst_file_roi, "r") as f:
+            roi = json.load(f)
+        target_temp = roi.get("target_temp", 24)
+        set_temp(i, target_temp)
