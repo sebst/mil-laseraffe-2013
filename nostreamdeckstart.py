@@ -11,6 +11,9 @@ from time import sleep
 from datetime import datetime
 from collect import dst as collect_dst
 
+from canhelper import CAN_IDS
+
+
 class Fullscreen_Window:
 
     laserPIs = {i: False for i in range(101, 111)}
@@ -26,6 +29,17 @@ class Fullscreen_Window:
         22: 109,
         23: 110
     }
+
+    def press_laserpi_key(self, laserpi=None, laserpikey=None):
+        if laserpikey is not None:
+            _laserpi = self.laserPIKeys[laserpikey]
+            assert (_laserpi == laserpi) or (laserpi is None)
+            laserpi = _laserpi
+        self.laserPIs[laserpi] = not self.laserPIs[laserpi]
+        return self.laserPIs[laserpi]
+
+
+
 
 
     started = False
@@ -68,17 +82,22 @@ class Fullscreen_Window:
     def setup_measurement(self):
         self.selected_cycle = 100
         self.selected_interval = 10
-        self.laserPIs = {i: False for i in range(101, 111)}
-        self.laserPIs[101]: True
-        self.laserPIs[102]: True
+        # self.laserPIs = {i: False for i in range(101, 111)}
+
+
+        self.press_laserpi_key(laserpi=101)
+        self.press_laserpi_key(laserpi=102)
+
+        print("laserPis", self.laserPIs)
 
         def start():
             self.on_start_requested()
             pis = [str(k) for k, v in self.laserPIs.items() if v]
             pis = " ".join(pis)
             print(f'-------------------------------------------------')
-            print(f"{pis} {self.selected_cycle} {self.selected_interval}")
-            os.system(f'./batch.py {pis} {self.selected_cycle} {self.selected_interval}')
+            batch_py_cmd = f'./batch.py {pis} {self.selected_cycle} {self.selected_interval}'
+            print(batch_py_cmd)
+            os.system(batch_py_cmd)
             self.started = True
             self.on_started()
         start()
@@ -88,6 +107,8 @@ class Fullscreen_Window:
                 continue
             if False and t.is_alive():
                 t.join()
+
+
 
         def update():
             while True:
@@ -126,11 +147,6 @@ class Fullscreen_Window:
                             pass
 
                         try:
-                            seconds = time.time() - os.stat(fn)[stat.ST_MTIME]
-                        except:
-                            seconds = 100
-
-                        try:
                             with open(fn_roi) as f_roi:
                                 roi = json.load(f_roi)
                             roi_unknown = roi.get("col") not in ("RED", "BLUE")
@@ -151,4 +167,5 @@ class Fullscreen_Window:
 if __name__ == '__main__':
     w = Fullscreen_Window()
     w.gallery_activated = False
+    w.setup_measurement()
     w.tk.mainloop()
