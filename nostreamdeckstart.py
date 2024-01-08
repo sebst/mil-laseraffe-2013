@@ -20,7 +20,30 @@ os.environ['PYTHONPATH'] += ':'+path
 path = CUR_PATH + "/mcs_python/mcs"
 os.environ['PYTHONPATH'] += ':'+path
 print("path", path)
+
+
+
+from canhelper import CAN_IDS
 import mcs
+CAN_COMMUNICATORS = {
+    "pci1":
+        {'channel': 'PCAN_PCIBUS1', 'bus_type': 'pcan', 'bit_rate': 1000000},
+    "usb1":
+        {'channel': 'PCAN_USBBUS1', 'bus_type': 'pcan', 'bit_rate': 1000000},
+    "usb2":
+        {'channel': 'PCAN_USBBUS2', 'bus_type': 'pcan', 'bit_rate': 1000000},
+    "socket0":
+        {'channel': 'can0', 'bus_type': 'socketcan', 'bit_rate': 1000000},
+    "socket1":
+        {'channel': 'can1', 'bus_type': 'socketcan', 'bit_rate': 1000000},
+    "socket2":
+        {'channel': 'can2', 'bus_type': 'socketcan', 'bit_rate': 1000000},
+}
+
+com_can = mcs.ComPythonCan(**CAN_COMMUNICATORS["socket0"])
+mcs_bus = mcs.McsBus(com_can)
+
+can = mcs.Mcs(mcs_bus)
 
 
 class Fullscreen_Window:
@@ -89,9 +112,11 @@ class Fullscreen_Window:
         os.system(f'./sync_usb.sh {self._collect_dst}')
 
     def setup_measurement(self):
+        global CAN_IDS, can, msc_bus
+
         self.selected_cycle = 100
         self.selected_interval = 10
-        # self.laserPIs = {i: False for i in range(101, 111)}
+        self.laserPIs = {i: False for i in range(101, 111)}
 
         # Test run just for one Laser!
         self.press_laserpi_key(laserpi=105)
@@ -100,6 +125,8 @@ class Fullscreen_Window:
         for pi, is_on in self.laserPIs.items():
             if is_on:
                 address = CAN_IDS[pi]
+                # can.register(mcs.McsDevice(address, mcs_bus))
+                # can.open("ignore")
                 can = mcs.get_mcs()
                 laser_1 = mcs.LaserBoard(can.get_device(address))
                 laser_1.initialize()
