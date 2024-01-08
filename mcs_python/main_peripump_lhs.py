@@ -1,0 +1,112 @@
+# -*- coding: utf-8 -*-
+import logging
+import sys
+import time
+
+import mcs
+
+log_format = (f'%(asctime)s %(levelname)-8.8s %(name)-20.20s '
+              f'%(message)s')
+formatter = logging.Formatter(log_format)
+console_handler = logging.StreamHandler(sys.stdout)  # instead of stderr
+console_handler.setFormatter(formatter)
+console_handler.setLevel(logging.DEBUG)
+log_mcs = logging.getLogger("mcs")
+log_mcs.addHandler(console_handler)
+log_mcs.setLevel(logging.DEBUG)
+log = logging.getLogger(__name__)
+
+
+def run() -> None:
+    can = mcs.get_mcs()
+    # can = mcs.get_usb_mcs()
+    try:
+        peri_pump_1 = mcs.PeristalticPumpLHS(can.get_device(0x401))
+        peri_pump_2 = mcs.PeristalticPumpLHS(can.get_device(0x402))
+        peri_pump_3 = mcs.PeristalticPumpLHS(can.get_device(0x403))
+
+        # peri_pump_1.initialize()
+        # peri_pump_2.initialize()
+        # peri_pump_3.initialize()
+
+        # peri_pump_1.set_fram_parameter(can_id=0x401)
+        # peri_pump_2.set_fram_parameter(can_id=0x402)
+        # peri_pump_3.set_fram_parameter(can_id=0x403)
+
+        # print(f"param: 1 (pump 1)= {peri_pump_1.get_parameter(parameter=1)}")
+        # print(f"param: 2 (pump 1)= {peri_pump_1.get_parameter(parameter=2)}")
+        # print(f"param: 10 (pump 1)= {peri_pump_1.get_parameter(parameter=10)}")
+        # print(f"param: 12 (pump 1)= {peri_pump_1.get_parameter(parameter=12)}")
+        # print(f"param: 13 (pump 1)= {peri_pump_1.get_parameter(parameter=13)}")
+        #
+        # print(f"param: 1 (pump 2)= {peri_pump_2.get_parameter(parameter=1)}")
+        # print(f"param: 2 (pump 2)= {peri_pump_2.get_parameter(parameter=2)}")
+        # print(f"param: 10 (pump 2)= {peri_pump_2.get_parameter(parameter=10)}")
+        # print(f"param: 12 (pump 2)= {peri_pump_2.get_parameter(parameter=12)}")
+        # print(f"param: 13 (pump 2)= {peri_pump_2.get_parameter(parameter=13)}")
+        #
+        # print(f"param: 1 (pump 3)= {peri_pump_3.get_parameter(parameter=1)}")
+        # print(f"param: 2 (pump 3)= {peri_pump_3.get_parameter(parameter=2)}")
+        # print(f"param: 10 (pump 3)= {peri_pump_3.get_parameter(parameter=10)}")
+        # print(f"param: 12 (pump 3)= {peri_pump_3.get_parameter(parameter=12)}")
+        # print(f"param: 13 (pump 3)= {peri_pump_3.get_parameter(parameter=13)}")
+
+
+        # #
+        # peri_pump_1.initialize()
+        peri_pump_2.initialize()
+        peri_pump_3.initialize()
+        #
+        # peri_pump_1.move_absolute(position=100000, speed=10000, timeout=0)
+        peri_pump_2.move_absolute(position=100000, speed=10000, timeout=0)
+        peri_pump_3.move_absolute(position=100000, speed=10000, timeout=0)
+
+        # peri_pump_1.wait(timeout=30)
+        peri_pump_2.wait(timeout=30)
+        peri_pump_3.wait(timeout=30)
+
+        # print(f"param: 14 (pump 1)= {peri_pump_1.get_parameter(parameter=14)}")
+        print(f"param: 14 (pump 2)= {peri_pump_2.get_parameter(parameter=14)}")
+        print(f"param: 14 (pump 3)= {peri_pump_3.get_parameter(parameter=14)}")
+
+        # # print(f"peri pump 1 pos: {peri_pump_1.get_pos()}")
+        # # print(f"peri pump 2 pos: {peri_pump_2.get_pos()}")
+        # print(f"peri pump 3 pos: {peri_pump_3.get_pos()}")
+        #
+        # # peri_pump_1.move_absolute(position=0, speed=10000, timeout=0)
+        # # peri_pump_2.move_absolute(position=0, speed=10000, timeout=0)
+        # peri_pump_3.move_absolute(position=0, speed=10000, timeout=0)
+        #
+        # # peri_pump_1.wait(timeout=30)
+        # # peri_pump_2.wait(timeout=30)
+        # peri_pump_3.wait(timeout=30)
+        #
+        # # print(f"peri pump 1 pos: {peri_pump_1.get_pos()}")
+        # # print(f"peri pump 2 pos: {peri_pump_2.get_pos()}")
+        # print(f"peri pump 3 pos: {peri_pump_3.get_pos()}")
+
+        # peri_pump_1.move_relative_cw(position=10000, speed=10000, timeout=0)
+        # peri_pump_2.move_relative_cw(position=10000, speed=10000, timeout=0)
+        # peri_pump_3.move_relative_cw(position=10000, speed=10000, timeout=0)
+        #
+        # peri_pump_1.wait(timeout=30)
+        # peri_pump_2.wait(timeout=30)
+        # peri_pump_3.wait(timeout=30)
+        #
+        # peri_pump_1.move_relative_ccw(position=10000, speed=10000, timeout=0)
+        # peri_pump_2.move_relative_ccw(position=10000, speed=10000, timeout=0)
+        # peri_pump_3.move_relative_ccw(position=10000, speed=10000, timeout=0)
+        #
+        # peri_pump_1.wait(timeout=30)
+        # peri_pump_2.wait(timeout=30)
+        # peri_pump_3.wait(timeout=30)
+
+    finally:
+        try:
+            can.close()
+        except Exception as exc:
+            print(exc)
+
+
+if __name__ == "__main__":
+    run()

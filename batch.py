@@ -30,7 +30,7 @@ if True: # Set to False for testing purposes -> needs to be set to True
         os.system(f'scp run.sh 192.168.0.{i}:run.sh')
         os.system(f'scp scan.py 192.168.0.{i}:scan.py')
         os.system(f'scp findroi.py 192.168.0.{i}:findroi.py')
-        os.system(f'scp canhelper.py 192.168.0.{i}:findroi.py')
+        os.system(f'scp canhelper.py 192.168.0.{i}:canhelper.py')
         os.system(f'scp analyze.py 192.168.0.{i}:analyze.py')
         print(f'transfer ({i}) complete')
         os.system(f'ssh 192.168.0.{i} nohup ./run.sh {args.cycles} {args.interval} {exp_time} >/dev/null 2>&1 &')
