@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 #
 import os
+CUR_PATH = os.path.dirname(os.path.abspath(__file__))
+path = CUR_PATH + "/mcs_python"
+os.environ['PYTHONPATH'] += ':'+path
+print("path", path)
 
 import argparse
 
@@ -8,6 +12,9 @@ from pathlib import Path
 
 from datetime import datetime
 import json
+
+from canhelper import CAN_IDS
+import mcs
 
 base = 'media/stick'
 dst = '211129'
@@ -21,10 +28,12 @@ fullDir = os.path.join(base,dst)
 
 def read_temp(i):
     """CAN logic here"""
+    global CAN_IDS
     pass
 
 def set_temp(i, target):
     """CAN logic here"""
+    global CAN_IDS
     pass
 
 

@@ -1,11 +1,12 @@
 Metadata-Version: 2.1
 Name: mcs
-Version: 0.2.0.dev1
+Version: 0.3.0.dev1
 Summary: Miltenyi CAN system package
 Home-page: https://www.miltenyibiotec.com
 Author: Martin Mengel
 Author-email: martinm@miltenyi._com
 License: proprietary and confidential
+Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.7
@@ -42,3 +43,5 @@ The PCANBasic module included here is originally downloaded from the official PE
 
 ## License
 The code used from PEAK-System is proprietary and usage, etc. is limited. Please check their licence conditions before distributing.
+
+

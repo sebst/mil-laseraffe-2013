@@ -13,6 +13,15 @@ from collect import dst as collect_dst
 
 from canhelper import CAN_IDS
 
+import os
+CUR_PATH = os.path.dirname(os.path.abspath(__file__))
+path = CUR_PATH + "/mcs_python/"
+os.environ['PYTHONPATH'] += ':'+path
+path = CUR_PATH + "/mcs_python/mcs"
+os.environ['PYTHONPATH'] += ':'+path
+print("path", path)
+import mcs
+
 
 class Fullscreen_Window:
 
@@ -84,9 +93,18 @@ class Fullscreen_Window:
         self.selected_interval = 10
         # self.laserPIs = {i: False for i in range(101, 111)}
 
+        # Test run just for one Laser!
+        self.press_laserpi_key(laserpi=105)
 
-        self.press_laserpi_key(laserpi=101)
-        self.press_laserpi_key(laserpi=102)
+        # Initialize and turn on the lasers
+        for pi, is_on in self.laserPIs.items():
+            if is_on:
+                address = CAN_IDS[pi]
+                can = mcs.get_mcs()
+                laser_1 = mcs.LaserBoard(can.get_device(address))
+                laser_1.initialize()
+                print(f"temperature of laser at {pi} is: {laser_1.get_temperature_laser_1() / 100.0} °C")
+                laser_1.on()
 
         print("laserPis", self.laserPIs)
 
