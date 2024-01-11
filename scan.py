@@ -35,17 +35,23 @@ def update_roi(key, value):
     with open(".roi.json", "w") as f:
         json.dump(roi, f)
 
+def read_temp_from_temp_file():
+    with open("read_temp.float", "r") as f:
+        t = float(f.read())
+    return t
+
 def read_temp():
     t = 0
     try:
-        with open("read_tmp.float", "r") as f:
-            t = float(f.read())
+        t = read_temp_from_temp_file()
     except:
         pass
     update_roi("read_temp", t)
+    return t
 
 def set_temp(target):
-    update_roi("target_tmp", target)
+    update_roi("target_temp", target)
+    return target
 
 
 threads = []
@@ -104,16 +110,16 @@ for i in range(cycles):
 
     file_object.seek(0)
 
-    read_temp()
+    r_t = read_temp()
     for tidx, bp in enumerate(ranges):
         if i >= bp:
             temp_to_set = temps[tidx]
         if i < bp:
             break
-    set_temp(temp_to_set)
+    s_t = set_temp(temp_to_set)
     
     # Analyze
-    x = threading.Thread(target=analyze, args=(file_object, i, tStr, cycles))
+    x = threading.Thread(target=analyze, args=(file_object, i, tStr, cycles, s_t, r_t))
     x.start()
     threads.append(x)
 

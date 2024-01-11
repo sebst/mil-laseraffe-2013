@@ -78,7 +78,7 @@ def prep():
 
 
 
-def analyze(file_object, cycle_no, t, total):
+def analyze(file_object, cycle_no, t, total, target_temp=0, read_temp=0):
     i = cycle_no
     startT = time()
     with open('result.csv','a') as result:
@@ -100,7 +100,7 @@ def analyze(file_object, cycle_no, t, total):
         #print("The ellipse diameter (closest to horizontal) is %.0f pixels" % dx)
         #print("The ellipse diameter (closest to   vertical) is %.0f pixels" % dy)
         #print("The ellipse is rotated %.0f° ccw from horizontal" % (phi*180/3.1416))
-        result.write(f'{i},{t},{Int_max},{x},{y},{dx},{dy},{phi*180.0/3.1416},{ix()},{iy()},{iw()},{ih()},{col()},\n')
+        result.write(f'{i},{t},{Int_max},{x},{y},{dx},{dy},{phi*180.0/3.1416},{ix()},{iy()},{iw()},{ih()},{col()},{target_temp},{read_temp}\n')
         now = time()
         tpf = float(now-startT)/float(i+1)
         fTime = float(total-i)*tpf/3600.0

@@ -48,8 +48,7 @@ def read_temp(pi):
     laser_1 = mcs.LaserBoard(can.get_device(address))
     print(f"[collect.py]: READ_TEMP,READ_TEMP,,,,,,temperature of laser at {pi} is: {laser_1.get_temperature_laser_1() / 100.0} °C")
     temp_float = laser_1.get_temperature_laser_1() / 100.0
-    # with open(f"tmp_{pi}.float", "w") as f:
-    #     f.write(str(temp_float))
+
     return temp_float
 
 

@@ -139,7 +139,7 @@ class Fullscreen_Window:
         print("on_started called as measurement is started.")
 
     def on_ready(self):
-        print("I am READY")
+        # print("I am READY")
         self.started = False
 
     def make_plots(self):
@@ -190,26 +190,30 @@ class Fullscreen_Window:
         def update():
             while True:
                 print("----------- New Collection cycle ----------------")
-                print("while", self.laserPIs.items(), self.started)
+                # print("while", self.laserPIs.items(), self.started)
+                print(f"{self.started=}")
+
                 if Path(".usb.lock").exists():
                     self.usb_lock = True
                 else: 
                     self.usb_lock = False
                 ready_states = []
                 for pi, is_on in self.laserPIs.items():                 # Laser IDs and state
+                    # print(f"    ...  {pi=} {is_on=} {ready_states=}")
                     if not is_on:
                         ready_states.append(1)
                     if is_on and self.started:                          # Check state and if acquisition has started
+                        # print(f"    hhhhhhhhhh    fffff")
                         for key, ip_sfx in self.laserPIKeys.items():    # Identification of pi's steam deck position and pi address (ip_suffix)
                             if ip_sfx == pi: break                      # looking for sfx, but the keys are the key positions
-                        print("pi", pi, "key", key)
+                        print(":::::::::::::::::::::::pi", pi, "key", key)
 
                         # Reading the temperature via CAN and posting it to the associated Raspberry
                         temperature = read_temp(CAN_DEVICES[pi])
                         print("TEMPPPPPPPPPP", temperature)
-                        with open(f"read_tmp.float.{pi}", "w+") as f:
+                        with open(f"read_temp.float.{pi}", "w+") as f:
                             f.write(str(temperature))
-                        os.system(f'scp read_tmp.float.{pi} 192.168.0.{pi}:read_tmp.float')
+                        os.system(f'scp read_temp.float.{pi} 192.168.0.{pi}:read_temp.float')
 
                         # Getting the requested temperature from the Raspberry and set it via CAN
                         try:
@@ -222,21 +226,19 @@ class Fullscreen_Window:
                             try:
                                 with open(f".roi.json.{pi}", "r") as f:
                                     roi_data = json.load(f)
-                                    target_temp = roi_data.get("target_tmp")
+                                    target_temp = roi_data.get("target_temp")
                                     set_temp(CAN_DEVICES[pi], float(target_temp))
                                     print("SET SET SET TEMPPPPPPPPPP", target_temp)
 
                             except Exception as e:
                                 print("Could not set temp", e)
-                                raise
-
-
+                                # raise
 
                         os.system(f'./collect.py {ip_sfx} {self._collect_dst}')
-                        fn = (f'{self._collect_dst}/result_{ip_sfx}.csv') # What happens, if the .csv is not there?
+                        fn = f'{self._collect_dst}/result_{ip_sfx}.csv' # What happens, if the .csv is not there?
                         # dst_file_roi = f"{CUR_DATE}/result_{i}.roi"
-                        fn_roi = (f'{self._collect_dst}/result_{ip_sfx}.roi') # What happens, if the .csv is not there?
-                        print(fn)
+                        fn_roi = f'{self._collect_dst}/result_{ip_sfx}.roi' # What happens, if the .csv is not there?
+                        # print(fn)
 
                         line = None
                         s = 0
@@ -262,8 +264,16 @@ class Fullscreen_Window:
                             ready_states.append(1)
                         if s == self.selected_cycle:
                             ready_states.append(1)
+                    if is_on:
+                        for key, ip_sfx in self.laserPIKeys.items():    # Identification of pi's steam deck position and pi address (ip_suffix)
+                            if ip_sfx == pi: break                      # looking for sfx, but the keys are the key positions
+                        print(">>>> pi is on", pi, "key", key)
+
+
                 if sum(ready_states) == 10:
-                    self.on_ready()
+                    pass
+                    # print(".")
+                    # self.on_ready()
                 sleep(5)
         upd_thread = threading.Thread(target=update)
         upd_thread.start()
