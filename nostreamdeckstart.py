@@ -21,45 +21,80 @@ path = CUR_PATH + "/mcs_python/mcs"
 os.environ['PYTHONPATH'] += ':'+path
 print("path", path)
 
+IP_OFFSET = 100
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 from canhelper import CAN_IDS
 import mcs
-CAN_COMMUNICATORS = {
-    "pci1":
-        {'channel': 'PCAN_PCIBUS1', 'bus_type': 'pcan', 'bit_rate': 1000000},
-    "usb1":
-        {'channel': 'PCAN_USBBUS1', 'bus_type': 'pcan', 'bit_rate': 1000000},
-    "usb2":
-        {'channel': 'PCAN_USBBUS2', 'bus_type': 'pcan', 'bit_rate': 1000000},
-    "socket0":
-        {'channel': 'can0', 'bus_type': 'socketcan', 'bit_rate': 1000000},
-    "socket1":
-        {'channel': 'can1', 'bus_type': 'socketcan', 'bit_rate': 1000000},
-    "socket2":
-        {'channel': 'can2', 'bus_type': 'socketcan', 'bit_rate': 1000000},
-}
+can = mcs.get_mcs()
+CAN_DEVICES = {}
+for key, address in CAN_IDS.items():
+    try:
+        CAN_DEVICES[key] = mcs.LaserBoard(can.get_device(address))
+    except:
+        CAN_DEVICES[key] = None
 
-com_can = mcs.ComPythonCan(**CAN_COMMUNICATORS["socket0"])
-mcs_bus = mcs.McsBus(com_can)
+def read_temp(device):
+    """CAN logic here"""
+    laser_1 = device
+    print(f"[read_temp]: READ_TEMP,READ_TEMP,,,,,,temperature of laser is: {laser_1.get_temperature_laser_1() / 100.0} °C")
+    temp_float = laser_1.get_temperature_laser_1() / 100.0
+    return temp_float
 
-can = mcs.Mcs(mcs_bus)
+
+
+def set_temp(device, target):
+    target_temp = target * 100.0
+    device.set_temp_laser(target_temp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class Fullscreen_Window:
 
     laserPIs = {i: False for i in range(101, 111)}
     laserPIKeys = {
-         3: 101,
-         4: 102,
-         5: 103,
-         6: 104,
-         7: 105,
-        19: 106,
-        20: 107,
-        21: 108,
-        22: 109,
-        23: 110
+         3: 101 + IP_OFFSET,
+         4: 102 + IP_OFFSET,
+         5: 103 + IP_OFFSET,
+         6: 104 + IP_OFFSET,
+         7: 105 + IP_OFFSET,
+        19: 106 + IP_OFFSET,
+        20: 107 + IP_OFFSET,
+        21: 108 + IP_OFFSET,
+        22: 109 + IP_OFFSET,
+        23: 110 + IP_OFFSET
     }
 
     def press_laserpi_key(self, laserpi=None, laserpikey=None):
@@ -112,26 +147,23 @@ class Fullscreen_Window:
         os.system(f'./sync_usb.sh {self._collect_dst}')
 
     def setup_measurement(self):
-        global CAN_IDS, can, msc_bus
+        global CAN_DEVICES
 
         self.selected_cycle = 100
         self.selected_interval = 10
-        self.laserPIs = {i: False for i in range(101, 111)}
+        self.laserPIs = {i: False for i in range(101 + IP_OFFSET, 111 + IP_OFFSET)}
 
         # Test run just for one Laser!
-        self.press_laserpi_key(laserpi=105)
+        self.press_laserpi_key(laserpi=105 + IP_OFFSET)
 
         # Initialize and turn on the lasers
         for pi, is_on in self.laserPIs.items():
             if is_on:
-                address = CAN_IDS[pi]
-                # can.register(mcs.McsDevice(address, mcs_bus))
-                # can.open("ignore")
-                can = mcs.get_mcs()
-                laser_1 = mcs.LaserBoard(can.get_device(address))
-                laser_1.initialize()
-                print(f"temperature of laser at {pi} is: {laser_1.get_temperature_laser_1() / 100.0} °C")
-                laser_1.on()
+                if CAN_DEVICES[pi]:
+                    can_device = CAN_DEVICES[pi]
+                    can_device.initialize()
+                    can_device.on()
+                    print("TTTTTTTTTTTTTTTTT", can_device.get_temperature_laser_1())
 
         print("laserPis", self.laserPIs)
 
@@ -171,6 +203,7 @@ class Fullscreen_Window:
                         for key, ip_sfx in self.laserPIKeys.items():    # Identification of pi's steam deck position and pi address (ip_suffix)
                             if ip_sfx == pi: break                      # looking for sfx, but the keys are the key positions 
                         print("pi", pi, "key", key)
+                        print("TEMPPPPPPPPPP", read_temp(CAN_DEVICES[pi]))
                         
                         os.system(f'./collect.py {ip_sfx} {self._collect_dst}')
                         fn = (f'{self._collect_dst}/result_{ip_sfx}.csv') # What happens, if the .csv is not there?
