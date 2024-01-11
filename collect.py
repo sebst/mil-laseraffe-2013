@@ -44,5 +44,20 @@ if __name__=="__main__":
         print(f'[collect.py]: fetching results_{dst}.csv from 192.168.0.{i}...')
         os.system(f'scp 192.168.0.{i}:result.csv {dst_file}')
         os.system(f'scp 192.168.0.{i}:.roi.json {dst_file_roi}')
+        os.system(f'scp 192.168.0.{i}:.roi.json .roi.json.{i}')
 
-
+        # try:
+        #     t = read_temp(i)
+        #     with open(f"[collect.py]: read_tmp.float.{i}", "w+") as f:
+        #         f.write(str(t))
+        #     os.system(f'scp read_tmp.float.{i} 192.168.0.{i}:read_tmp.float')
+        # except Exception as e:
+        #     print(f"[collect.py]: Could not write measured temp for {i}", e)
+        #
+        # try:
+        #     with open(dst_file_roi, "r") as f:
+        #         roi = json.load(f)
+        #     target_temp = roi.get("target_temp", 24)
+        #     set_temp(i, target_temp)
+        # except Exception as e:
+        #     print(f"[collect.py]: Could not read target temp for {i}", e)

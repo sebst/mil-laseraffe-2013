@@ -62,7 +62,7 @@ def read_temp(device):
 
 
 def set_temp(device, target):
-    target_temp = target * 100.0
+    target_temp = int(target * 100.0)
     device.set_temp_laser(target_temp)
 
 
@@ -201,10 +201,37 @@ class Fullscreen_Window:
                         ready_states.append(1)
                     if is_on and self.started:                          # Check state and if acquisition has started
                         for key, ip_sfx in self.laserPIKeys.items():    # Identification of pi's steam deck position and pi address (ip_suffix)
-                            if ip_sfx == pi: break                      # looking for sfx, but the keys are the key positions 
+                            if ip_sfx == pi: break                      # looking for sfx, but the keys are the key positions
                         print("pi", pi, "key", key)
-                        print("TEMPPPPPPPPPP", read_temp(CAN_DEVICES[pi]))
-                        
+
+                        # Reading the temperature via CAN and posting it to the associated Raspberry
+                        temperature = read_temp(CAN_DEVICES[pi])
+                        print("TEMPPPPPPPPPP", temperature)
+                        with open(f"read_tmp.float.{pi}", "w+") as f:
+                            f.write(str(temperature))
+                        os.system(f'scp read_tmp.float.{pi} 192.168.0.{pi}:read_tmp.float')
+
+                        # Getting the requested temperature from the Raspberry and set it via CAN
+                        try:
+                            with open(f".roi.json.{pi}", "r") as f:
+                                roi_data = json.load(f)
+                        except:
+                            roi_data = None
+
+                        if roi_data:
+                            try:
+                                with open(f".roi.json.{pi}", "r") as f:
+                                    roi_data = json.load(f)
+                                    target_temp = roi_data.get("target_tmp")
+                                    set_temp(CAN_DEVICES[pi], float(target_temp))
+                                    print("SET SET SET TEMPPPPPPPPPP", target_temp)
+
+                            except Exception as e:
+                                print("Could not set temp", e)
+                                raise
+
+
+
                         os.system(f'./collect.py {ip_sfx} {self._collect_dst}')
                         fn = (f'{self._collect_dst}/result_{ip_sfx}.csv') # What happens, if the .csv is not there?
                         # dst_file_roi = f"{CUR_DATE}/result_{i}.roi"

@@ -26,8 +26,11 @@ temps = [22.0, 22.25, 22.5, 22.75, 23.0, 23.25, 23.5, 23.75, 24.0, 24.25, 24.5]
 
 
 def update_roi(key, value):
-    with open(".roi.json", "r") as f:
-        roi = json.load(f)
+    try:
+        with open(".roi.json", "r") as f:
+            roi = json.load(f)
+    except:
+        roi = {}
     roi[key] = value
     with open(".roi.json", "w") as f:
         json.dump(roi, f)
@@ -39,7 +42,7 @@ def read_temp():
             t = float(f.read())
     except:
         pass
-    update_roi(read_temp, t)
+    update_roi("read_temp", t)
 
 def set_temp(target):
     update_roi("target_tmp", target)
