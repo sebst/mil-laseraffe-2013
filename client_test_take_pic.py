@@ -6,6 +6,6 @@ import os
 from findroi import take_picture
 
 b = take_picture()
-with open("test_pic.png", "w+") as f:
+with open("test_pic.png", "wb+") as f:
     f.write(b.read())
 

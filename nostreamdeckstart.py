@@ -51,19 +51,26 @@ for key, address in CAN_IDS.items():
         CAN_DEVICES[key] = mcs.LaserBoard(can.get_device(address))
     except:
         CAN_DEVICES[key] = None
+        raise
 
 def read_temp(device):
     """CAN logic here"""
-    laser_1 = device
-    print(f"[read_temp]: READ_TEMP,READ_TEMP,,,,,,temperature of laser is: {laser_1.get_temperature_laser_1() / 100.0} °C")
-    temp_float = laser_1.get_temperature_laser_1() / 100.0
+    print("About to read temperature")
+    port = 4 if str(hex(device._device.id))[-1] == '3' else 3
+    # port = 4 # or 3
+    can_response = device.get_port(port=port)
+    temp_float = can_response / 100.0
     return temp_float
 
 
 
 def set_temp(device, target):
+    print("About to set temperature")
+    # print(f"Reported FRAM temperature: {device.get_parameter(0)=}")
+    device.operate(0)
     target_temp = int(target * 100.0)
     device.set_temp_laser(target_temp)
+    device.operate(1)
 
 
 
@@ -154,7 +161,8 @@ class Fullscreen_Window:
         self.laserPIs = {i: False for i in range(101 + IP_OFFSET, 111 + IP_OFFSET)}
 
         # Test run just for one Laser!
-        self.press_laserpi_key(laserpi=105 + IP_OFFSET)
+        self.press_laserpi_key(laserpi=101 + IP_OFFSET)
+        # self.press_laserpi_key(laserpi=102 + IP_OFFSET)
 
         # Initialize and turn on the lasers
         for pi, is_on in self.laserPIs.items():
@@ -162,7 +170,8 @@ class Fullscreen_Window:
                 if CAN_DEVICES[pi]:
                     can_device = CAN_DEVICES[pi]
                     can_device.initialize()
-                    can_device.on()
+
+                    can_device.operate(1)
                     print("TTTTTTTTTTTTTTTTT", can_device.get_temperature_laser_1())
 
         print("laserPis", self.laserPIs)
