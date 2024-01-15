@@ -196,12 +196,12 @@ def find_roi():
         )
 
 
-
-roi_file = Path('.roi.json')
-if roi_file.exists():
-    with open(roi_file, 'r') as f:
-        roi = json.load(f)
-else:
-    roi = find_roi()
-    with open(roi_file, 'w+') as f:
-        json.dump(roi, f)
+if __name__ == "__main__":
+    roi_file = Path('.roi.json')
+    if roi_file.exists():
+        with open(roi_file, 'r') as f:
+            roi = json.load(f)
+    else:
+        roi = find_roi()
+        with open(roi_file, 'w+') as f:
+            json.dump(roi, f)

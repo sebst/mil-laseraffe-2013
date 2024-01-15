@@ -23,6 +23,7 @@ args = parser.parse_args()
 
 
 temps = [22.0, 22.25, 22.5, 22.75, 23.0, 23.25, 23.5, 23.75, 24.0, 24.25, 24.5]
+temps = [22.0, 23.0, 24.0, 28.0]
 
 
 def update_roi(key, value):

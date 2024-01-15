@@ -149,7 +149,7 @@ class Fullscreen_Window:
     def setup_measurement(self):
         global CAN_DEVICES
 
-        self.selected_cycle = 100
+        self.selected_cycle = 5000
         self.selected_interval = 10
         self.laserPIs = {i: False for i in range(101 + IP_OFFSET, 111 + IP_OFFSET)}
 
