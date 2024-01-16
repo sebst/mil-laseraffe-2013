@@ -161,8 +161,12 @@ class Fullscreen_Window:
         self.laserPIs = {i: False for i in range(101 + IP_OFFSET, 111 + IP_OFFSET)}
 
         # Test run just for one Laser!
-        self.press_laserpi_key(laserpi=101 + IP_OFFSET)
+        # self.press_laserpi_key(laserpi=101 + IP_OFFSET)
         # self.press_laserpi_key(laserpi=102 + IP_OFFSET)
+
+        # Production Run: All Lasers
+        for i in range(101 + IP_OFFSET, 111 + IP_OFFSET):
+            self.press_laserpi_key(laserpi=i)
 
         # Initialize and turn on the lasers
         for pi, is_on in self.laserPIs.items():
