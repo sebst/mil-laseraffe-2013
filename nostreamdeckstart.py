@@ -156,6 +156,7 @@ class Fullscreen_Window:
     def setup_measurement(self):
         global CAN_DEVICES
 
+
         self.selected_cycle = 5000
         self.selected_interval = 10
         self.laserPIs = {i: False for i in range(101 + IP_OFFSET, 111 + IP_OFFSET)}
@@ -163,6 +164,9 @@ class Fullscreen_Window:
         # Test run just for one Laser!
         # self.press_laserpi_key(laserpi=101 + IP_OFFSET)
         # self.press_laserpi_key(laserpi=102 + IP_OFFSET)
+        # self.press_laserpi_key(laserpi=103 + IP_OFFSET)
+        # self.press_laserpi_key(laserpi=104 + IP_OFFSET)
+        # self.press_laserpi_key(laserpi=105 + IP_OFFSET)
 
         # Production Run: All Lasers
         for i in range(101 + IP_OFFSET, 111 + IP_OFFSET):
